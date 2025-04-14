@@ -1,4 +1,10 @@
-<p-menubar [model]="items"/>
+<p-menubar [model]="items">
+  <ng-template #end>
+    <div class="flex items-center gap-2">
+      <app-submit-button [label]="'Bejelentkezés'"/>
+    </div>
+  </ng-template>
+</p-menubar>
 <app-submit-button/>
 
 

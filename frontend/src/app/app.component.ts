@@ -1,22 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core'
 import { RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Menubar } from 'primeng/menubar';
-import { SubmitButtonComponent} from './submit-button/submit-button.component'
+import {HomeComponent} from './home/home.component'
+import {NavigatorComponent} from './navigator/navigator.component'
+import {ButtonModule} from 'primeng/button'
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet,
     Menubar,
-    SubmitButtonComponent
+    ButtonModule,
+    HomeComponent,
+    NavigatorComponent
   ],
-  templateUrl: './app.component.html',
+  template:`
+    <app-navigator />
+    <main>
+      <router-outlet />
+    </main>
+  `,
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'my-first-project test';
-
   items: MenuItem[] | undefined;
 
   ngOnInit()
