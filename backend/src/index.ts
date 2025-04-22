@@ -1,28 +1,42 @@
-import { MainClass } from './main';
 import express from 'express';
 import { Request, Response } from 'express';
 import { configureRoutes } from './routes/routes';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser'
 import expressSession  from 'express-session';
 import passport from 'passport';
 import { configurePassport } from './passport/passport';
-
-// let vs. var vs. const
-// any vs. unknown
-// undefined vs. null
-// === vs. ==
+import mongoose from 'mongoose';
+import cors from 'cors';
 
 const app = express();
 const port = 5000;
+const dbUrl = 'mongodb://localhost:6000/online_market'
 
-// bodyParser
-app.use(bodyParser.urlencoded({extended: true}));
+mongoose.connect(dbUrl).then((_) => {
+	console.log("Sikeres csatlakozás a DB-hez")
+}).catch(error => {
+	console.log(error);
+	return;
+})
 
-// cookieParser
-app.use(cookieParser());
+const whitelist = ['*', 'http://localhost:4200']
+const corsOptions = {
+	origin: (origin: string | undefined, callback: (err: Error | null, allowed?: boolean) => void) => {
+		if (whitelist.indexOf(origin!) !== -1 || whitelist.includes('*')) {
+			callback(null, true);
+		} else {
+			callback(new Error('Not allowed by CORS.'));
+		}
+	},
+	credentials: true
+};
 
-// session
+app.use(cors(corsOptions))
+
+app.use(bodyParser.urlencoded({extended: true}))
+
+app.use(cookieParser())
 const sessionOptions: expressSession.SessionOptions = {
 	secret: 'testsecret',
 	resave: false,
