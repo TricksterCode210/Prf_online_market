@@ -4,8 +4,10 @@ import { Component } from '@angular/core';
   selector: 'app-sell',
   imports: [],
   templateUrl: './sell.component.html',
-  styleUrl: './sell.component.scss'
+  styleUrl: './sell.component.scss',
+  standalone:true
 })
-export class SellComponent {
+export class SellComponent
+{
 
 }

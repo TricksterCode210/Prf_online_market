@@ -1,65 +1,100 @@
-import { Router, Request, Response, NextFunction } from 'express';
-import { MainClass } from '../main-class';
-import { PassportStatic } from 'passport';
-import { User } from '../model/User';
-
+import {NextFunction, Request, Response, Router} from 'express'
+import {MainClass} from '../main-class'
+import {PassportStatic} from 'passport'
+import {User} from '../model/User'
 
 export const configureRoutes = (passport: PassportStatic, router: Router): Router => {
+    router.get('/', (req: Request, res: Response) => {
+        let myClass = new MainClass()
+        res.status(200).send('Szoszi')
+    })
 
-	router.get('/', (req: Request, res: Response) => {
-		let myClass = new MainClass();
-		res.status(200).send('Hello, World!');
-	});
+    router.get('/callback', (req: Request, res: Response) => {
+        let myClass = new MainClass()
+        myClass.monitoringCallback((error, result) => {
+            if (error) {
+                res.write(error)
+                res.status(400).end()
+            } else {
+                res.write(result)
+                res.status(200).end()
+            }
+        })
+    })
 
-	router.post('/login', (req: Request, res: Response, next: NextFunction) => {
-		passport.authenticate('local', (error: string | null, user: typeof User) => {
-			if (error) {
-				console.log(error);
-				res.status(500).send(error);
-			} else {
-				if (!user) {
-					res.status(400).send('User not found.');
-				} else {
-					req.login(user, (err: string | null) => {
-						if (err) {
-							console.log(err);
-							res.status(500).send('Internal server error.');
-						} else {
-							res.status(200).send(user);
-						}
-					});
-				}
-			}
-		})(req, res, next);
-	});
+    router.post('/login', (req: Request, res: Response, next: NextFunction) => {
+        passport.authenticate('local', (error: string | null, user: typeof User) => {
+            if (error) {
+                res.status(500).send(error)
+            } else {
+                if (!user) {
+                    res.status(400).send("A felhasználló nem található")
+                } else {
+                    req.login(user, (err: string | null) => {
+                        if (err) {
+                            console.log(err)
+                            res.status(500).send('Internal Server Error: ' + err);
+                        } else {
+                            res.status(200).send(user)
+                        }
+                    })
+                }
+            }
+        })(req, res, next);
+    })
 
-	router.post('/register', (req: Request, res: Response) => {
-		const email = req.body.email;
-		const password = req.body.password;
-		const username = req.body.username;
-		const address = req.body.address;
-		const saler = req.body.saler;
-		const user = new User({email: email, password: password, username: username, address: address, saler: saler});
-		user.save().then(data => {
-			res.status(200).send(data);
-		}).catch(error => {
-			res.status(500).send(error);
-		})
-	});
+    router.post('/register', (req: Request, res: Response) => {
+        const email = req.body.email;
+        const password = req.body.password;
+        const username = req.body.username;
+        const seller = req.body.seller;
+        const address = req.body.address;
+        const name = req.body.name;
+        const user = new User({email: email, password: password, username: username, seller: seller, address: address, name: name});
 
-	router.post('/logout', (req: Request, res: Response) => {
-		if (req.isAuthenticated()) {
-			req.logout((error) => {
-				if (error) {
-					console.log(error);
-					res.status(500).send('Internal server error.');
-				}
-				res.status(200).send('Successfully logged out.');
-			})
-		} else {
-			res.status(500).send('User is not logged in.');
-		}
-	});
+        user.save().then(data => {
+            res.status(200).send(data);
+        }).catch(error => {
+            res.status(500).send(error)
+        })
+    })
 
-	return router;
+    router.post('/logout', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            req.logout((error) => {
+                if (error) {
+                    console.log(error);
+                    res.status(500).send("Internall Server Error")
+                }
+                res.status(200).send("Sikeresen kilépett")
+            })
+        } else {
+            res.status(500).send("User is not logged in");
+        }
+    })
+
+    router.get('/getAllUsers', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            const query = User.find();
+            query.then(data => {
+                res.status(200).send(data)
+            }).catch(error => {
+                console.log(error)
+                res.status(500).send(error)
+            })
+        } else {
+            res.status(500).send("User is not logged in");
+        }
+    })
+
+    router.get('/checkAuth', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            res.status(200).send(true);
+        } else {
+            res.status(500).send(false);
+        }
+    })
+
+    return router
 }
+

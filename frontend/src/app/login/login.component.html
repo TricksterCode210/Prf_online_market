@@ -1,15 +1,14 @@
 <div class="login-container">
   <form class="login-form" (ngSubmit)="login()">
-    <input [(ngModel)]="email" name="email" type="email" placeholder="Email" required />
-    <input [(ngModel)]="password" name="password" type="password" placeholder="Password" required />
-    <div class="buttons">
-      <button type="submit">Login</button>
-    </div>
-    <div class="buttons">
-      <button type="button" (click)="navigate('/register')">Sign Up</button>
-    </div>
-    <div *ngIf="errorMessage">
-      <p>{{errorMessage}}</p>
-    </div>
+    <p-floatlabel variant="on">
+      <input pInputText id="username" name="username" [(ngModel)]="username"/>
+      <label for="username">Felhasználó név</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <input type="password" pInputText id="password" name="password" [(ngModel)]="password"/>
+      <label for="password">Jelszó</label>
+    </p-floatlabel>
+    <p-button type="submit" label="Bejelentkezés"/>
+    <p-button type="button" (onClick)="navigate('/register')" label="Regisztráció" severity="info"/>
   </form>
 </div>

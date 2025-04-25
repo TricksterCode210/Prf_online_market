@@ -1,36 +1,34 @@
 <div class="login-container">
-  <form class="login-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
-    <input formControlName="email" type="email" placeholder="Email cím" required [ngClass]="{'invalid-input': signupForm.get('email')?.errors}"/>
-    <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)">
-      <p *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.errors!['required']">Email is required.</p>
-      <p *ngIf="signupForm.get('email')?.errors && signupForm.get('email')?.errors!['email']">Please enter a valid email.</p>
+  <form class="login-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <p-floatlabel variant="on">
+      <input pInputText id="name" formControlName="name"/>
+      <label for="name">Neve</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <input pInputText id="username" formControlName="username" required/>
+      <label for="username">Felhasználó név</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <input pInputText id="address" formControlName="address" />
+      <label for="address">Szállítási cím</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <input pInputText type="email" id="email" formControlName="email" [ngClass]="{'invalid-input': registerForm.get('email')?.errors}" required/>
+      <label for="email">E-mail cím</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <input type="password" pInputText id="password" formControlName="password" required/>
+      <label for="password">Jelszó</label>
+    </p-floatlabel>
+    <p-floatlabel variant="on">
+      <input type="password" pInputText id="confirmPassword" formControlName="confirmPassword" required/>
+      <label for="confirmPassword">Jelszó megerősítés</label>
+    </p-floatlabel>
+    <div *ngFor="let type of userTypes">
+      <p-radiobutton [inputId]="type.name" [value]="type.value" formControlName="seller"/>
+      <label [for]="type.name" class="ml-2">{{ type.label }}</label>
     </div>
-    <input formControlName="name" type="text" placeholder="Név"/>
-    <input formControlName="address" type="text" placeholder="Szállítási cím"/>
-    <input formControlName="username" type="text" placeholder="Felhasználónév"/>
-    <input formControlName="password" type="password" placeholder="Jelszó" required [ngClass]="{'invalid-input': signupForm.get('password')?.errors}"/>
-    <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)">
-      <p *ngIf="signupForm.get('password')?.errors && signupForm.get('password')?.errors!['required']">A jelszó kötelező</p>
-      <p *ngIf="signupForm.get('password')?.errors && signupForm.get('password')?.errors!['minlength']">A jelszónak legalább 6 karakter hosszúnak kell lennie</p>
-    </div>
-    <input formControlName="confirmPassword" type="password" placeholder="Jelszó megerősítés" required [ngClass]="{'invalid-input': signupForm.get('confirmPassword')?.errors}"/>
-    <div *ngIf="signupForm.get('confirmPassword')?.invalid && (signupForm.get('confirmPassword')?.dirty || signupForm.get('confirmPassword')?.touched)">
-      <p *ngIf="signupForm.get('confirmPassword')?.errors && signupForm.get('confirmPassword')?.errors!['required']">Jelszó megerősítés szükséges</p>
-      <p *ngIf="signupForm.get('confirmPassword')?.errors && signupForm.get('confirmPassword')?.errors!['mustMatch']">A két jelszó nem egyezik</p>
-    </div>
-    <div class="card flex justify-center">
-      <div class="flex items-center">
-        <p-radioButton formControlName="saler" value="true" id="ingredient1" inputId="ingridient1"/>
-        <label for="ingredient1" class="ml-2">Eladó</label>
-        <p-radioButton formControlName="saler" value="false" id="ingredient2" inputId="ingridient2"/>
-        <label for="ingredient2" class="ml-2">Vásárló</label>
-      </div>
-    </div>
-    <div class="buttons">
-      <button type="submit">Sign Up</button>
-    </div>
-    <div class="buttons">
-      <button type="reset" (click)="goBack()">Back</button>
-    </div>
+    <p-button type="submit" label="Regisztráció"/>
+    <p-button type="button" (onClick)="navigate('/login')" label="Bejelentkezés" severity="info"/>
   </form>
 </div>

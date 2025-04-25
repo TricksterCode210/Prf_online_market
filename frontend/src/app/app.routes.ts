@@ -1,40 +1,14 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 import {authGuard} from './shared/guards/auth.guard'
 
 export const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    loadComponent: () => {
-      return import('./home/home.component').then((m) => m.HomeComponent)
-    },
-  },
-  {
-    path: 'buy',
-    loadComponent: () => {
-      return import('./buy/buy.component').then((m) => m.BuyComponent)
-    },
-  },
-  {
-    path: 'sell',
-    loadComponent: () => {
-      return import('./sell/sell.component').then((m) => m.SellComponent)
-    },
-  },
-  {
-    path: 'login',
-    loadComponent: () => {
-      return import('./login/login.component').then((m) => m.LoginComponent)
-    },
-  },
-  {
-    path: 'register',
-    loadComponent: () => {
-      return import('./register/register.component').then((m) => m.RegisterComponent)
-    },
-  },
-  {
-    path: "**",
-    redirectTo: ''
-  }
-];
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: "home", loadComponent: () => import('./home/home.component').then((c)=> c.HomeComponent)},
+  {path: "login", loadComponent: () => import('./login/login.component').then((c) => c.LoginComponent)},
+  {path: "register", loadComponent: () => import('./register/register.component').then((c) => c.RegisterComponent)},
+  {path: "buy", loadComponent: () => import('./buy/buy.component').then((c) => c.BuyComponent)},
+  {path: "sell", loadComponent: () => import('./sell/sell.component').then((c) => c.SellComponent)},
+  {path: "users", loadComponent: () => import('./user-managment/user-managment.component').then((c) => c.UserManagmentComponent), canActivate: [authGuard] },
+  {path: '**', redirectTo: 'home'}
+
+]

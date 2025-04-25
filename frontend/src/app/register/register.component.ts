@@ -1,75 +1,94 @@
-import { CommonModule, Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms'
-import { AuthService } from '../shared/services/auth.service';
-import {RadioButton} from 'primeng/radiobutton'
-
-// FormsModule, ReactiveFormsModule
+import {Component, OnInit} from '@angular/core';
+import {Button} from "primeng/button";
+import {FloatLabel} from "primeng/floatlabel";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {InputText} from "primeng/inputtext";
+import {RadioButton} from 'primeng/radiobutton';
+import {NgClass, NgForOf, Location} from '@angular/common';
+import {Router, RouterModule} from '@angular/router'
+import {AuthService} from '../shared/services/auth.service'
 
 @Component({
-  selector: 'app-signup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RadioButton, FormsModule],
+  selector: 'app-register',
+  imports: [
+    Button,
+    FloatLabel,
+    ReactiveFormsModule,
+    InputText,
+    RadioButton,
+    NgForOf,
+    NgClass,
+    RouterModule
+  ],
   templateUrl: './register.component.html',
+  standalone: true,
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent implements OnInit {
-  signupForm!: FormGroup;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private location: Location,
-    private authService: AuthService
-  ) { }
+    registerForm!: FormGroup;
 
-  ngOnInit() {
-    this.signupForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      name: [''],
-      address: [''],
-      username: [''],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', Validators.required],
-      saler: ['true']
-    }, {
-      validator: this.mustMatch('password', 'confirmPassword')
-    })
-  }
+    userTypes: any[] = [
+      {name: 'Seller', value: "elado", label: "Eladó"},
+      {name: 'Buyer',  value: "vasarlo", label: "Vásárló"},
+    ]
 
-  mustMatch(controlName: string, matchingControlName: string) {
-    return (formGroup: FormGroup) => {
-      const control = formGroup.controls[controlName];
-      const matchingControl = formGroup.controls[matchingControlName];
+    constructor(
+      private formBuilder: FormBuilder,
+      private router: Router,
+      private authService: AuthService
+    ) {
 
-      if (matchingControl.errors && matchingControl.errors['mustMatch']) {
-        return;
+    }
+
+    onSubmit() {
+      if(this.registerForm.valid) {
+        console.log("Form data: ", this.registerForm.value);
+        this.authService.register(this.registerForm.value).subscribe({
+          next: (data) => {
+            console.log(data)
+            this.router.navigateByUrl('/login')
+          }, error: (err) => {
+            console.log(err)
+          }
+        })
       }
-
-      if (control.value !== matchingControl.value) {
-        matchingControl.setErrors({ mustMatch: true });
-      } else {
-        matchingControl.setErrors(null);
+      else {
+        console.log("Hiba van a formban")
       }
     }
-  }
 
-  onSubmit() {
-    if (this.signupForm.valid) {
-      console.log('Form data:', this.signupForm.value);
-      this.authService.register(this.signupForm.value).subscribe({
-        next: (data) => {
-          this.goBack()
-        }, error: (err) => {
-          console.log(err);
+    ngOnInit() {
+      this.registerForm = this.formBuilder.group({
+        name: [''],
+        username: ['', [Validators.required]],
+        address: [''],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required]],
+        confirmPassword: ['', [Validators.required]],
+        seller: []
+      }, {
+        validator: this.mustMatch('password', 'confirmPassword')
+      })
+    }
+
+    mustMatch(controlName: string, matchingControlName: string) {
+      return (formGroup:FormGroup) => {
+        const control = formGroup.controls[controlName];
+        const matchingControl = formGroup.controls[matchingControlName];
+        if(matchingControl.errors && matchingControl.errors['mustMatch']){
+          return
         }
-      });
-    } else {
-      console.log('Form is not valid.');
+
+        if(control.value !== matchingControl.value) {
+          matchingControl.setErrors({mustMatch: true})
+        } else {
+          matchingControl.setErrors(null)
+        }
+      }
     }
-  }
 
-  goBack() {
-    this.location.back();
-  }
-
+    navigate(to: string){
+      this.router.navigateByUrl(to);
+    }
 }

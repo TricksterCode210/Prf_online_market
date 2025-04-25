@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { User } from '../model/User';
+import {HttpClient, HttpHeaders} from '@angular/common/http'
+import {User} from '../model/User'
 
 @Injectable({
   providedIn: 'root'
@@ -9,41 +9,39 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  // login
-  login(email: string, password: string) {
-    // HTTP POST request
-    const body = new URLSearchParams();
-    body.set('username', email);
-    body.set('password', password);
+  register(user: User){
+    const bodyRegister = new URLSearchParams();
+    bodyRegister.set('name', user.name)
+    bodyRegister.set('username', user.username)
+    bodyRegister.set('address', user.address)
+    bodyRegister.set('email', user.email)
+    bodyRegister.set('password', user.password)
+    bodyRegister.set('seller', user.seller)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
-    });
+    })
 
-    return this.http.post('http://localhost:5000/app/login', body, {headers: headers, withCredentials: true});
+    return this.http.post('http://localhost:5000/register', bodyRegister, {headers: headers})
   }
 
-  register(user: User) {
-    // HTTP POST request
-    const body = new URLSearchParams();
-    body.set('email', user.email);
-    body.set('saler', String(user.saler));
-    body.set('address', user.address);
-    body.set('username', user.username);
-    body.set('password', user.password);
+  login(username: string, password: string){
+    const bodyLogin = new URLSearchParams();
+    bodyLogin.set('username', username)
+    bodyLogin.set('password', password)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
-    });
+    })
 
-    return this.http.post('http://localhost:5000/app/register', body, {headers: headers});
+    return this.http.post('http://localhost:5000/login', bodyLogin, {headers: headers, withCredentials: true})
   }
 
-  logout() {
-    return this.http.post('http://localhost:5000/app/logout', {}, {withCredentials: true, responseType: 'text'});
+  logout(){
+    return this.http.post('http://localhost:5000/logout', {}, {withCredentials: true, responseType: 'text'})
   }
 
   checkAuth() {
-    return this.http.get<boolean>('http://localhost:5000/app/checkAuth', {withCredentials: true});
+    return this.http.get<boolean>('http://localhost:5000/checkAuth', {withCredentials: true})
   }
 }

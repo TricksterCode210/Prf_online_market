@@ -1,0 +1,17 @@
+<div class="card">
+  <p-menubar [model]="pages">
+    <ng-template #item let-item>
+      <a routerLink="{{item.link}}" class="flex items-center p-menubar-item-link">
+        <i class="pi {{item.icon}}"></i>
+        <span>{{ item.label }}</span>
+      </a>
+    </ng-template>
+    <ng-template #end>
+      <div class="flex items-center gap-2">
+        <p-button routerLink="/login" label="Bejelentkezés" class="nav-button"/>
+        <p-button routerLink="/register" label="Regisztráció"  severity="info" class="nav-button"/>
+        <p-button label="Kijelentkezés" (onClick)="logout()" severity="danger" class="nav-button"/>
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>

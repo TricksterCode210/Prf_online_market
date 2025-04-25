@@ -1,40 +1,44 @@
 import { Component } from '@angular/core';
-import {FormsModule} from '@angular/forms'
-import {CommonModule} from '@angular/common'
+import {FormsModule} from '@angular/forms';
+import {InputTextModule} from 'primeng/inputtext';
+import {FloatLabel} from 'primeng/floatlabel';
+import {ButtonModule} from 'primeng/button';
 import {Router, RouterModule} from '@angular/router'
 import {AuthService} from '../shared/services/auth.service'
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, InputTextModule, FloatLabel, ButtonModule, RouterModule],
   templateUrl: './login.component.html',
   standalone: true,
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  email: string = '';
+  username: string = ''
   password: string = '';
-  errorMessage: string = '';
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService)
+  {
+  }
 
   login() {
-    if (this.email && this.password) {
-      this.errorMessage = '';
-      this.authService.login(this.email, this.password).subscribe({
+    if(this.username && this.password){
+      this.authService.login(this.username, this.password).subscribe({
         next: (data) => {
-          console.log("Sikeres bejelentkezés")
-          this.router.navigateByUrl("/")
-        }, error: (err) => {
-          console.log(err);
-        },
+          if(data){
+            console.log(data)
+            this.router.navigateByUrl('/home')
+          }
+        }, error:(err)=>  {
+          console.log(err)
+        }
       })
     } else {
-      this.errorMessage = 'Form is empty.';
+      console.log("Nem jó")
     }
   }
 
   navigate(to: string){
-    this.router.navigateByUrl(to)
+    this.router.navigateByUrl(to);
   }
 }
