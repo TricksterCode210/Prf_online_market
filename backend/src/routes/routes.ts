@@ -2,6 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express'
 import {MainClass} from '../main-class'
 import {PassportStatic} from 'passport'
 import {User} from '../model/User'
+import {Product} from '../model/Product'
 
 export const configureRoutes = (passport: PassportStatic, router: Router): Router => {
     router.get('/', (req: Request, res: Response) => {
@@ -59,6 +60,21 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
+    router.post('/sell', (req: Request, res: Response) => {
+        const name = req.body.name;
+        const price = req.body.price;
+        const description = req.body.description;
+        // const imageSrc = req.body.imageSrc
+        const imageSrc = "https://th.bing.com/th/id/OIP.BmmdpuEUMVafIL_kvGfdsAHaFj?rs=1&pid=ImgDetMain";
+        const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc})
+
+        product.save().then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            res.status(500).send("Sikertelen feltöltés: " + error)
+        })
+    })
+
     router.post('/logout', (req: Request, res: Response) => {
         if (req.isAuthenticated()) {
             req.logout((error) => {
@@ -85,6 +101,16 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         } else {
             res.status(500).send("User is not logged in");
         }
+    })
+
+    router.get('/getAllProducts', (req: Request, res: Response) => {
+        const query = Product.find();
+        query.then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            console.log(error)
+            res.status(500).send(error)
+        })
     })
 
     router.get('/checkAuth', (req: Request, res: Response) => {

@@ -1,0 +1,30 @@
+import { Injectable } from '@angular/core';
+import {Product} from '../model/Product'
+import {HttpClient, HttpHeaders} from '@angular/common/http'
+import {User} from '../model/User'
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ProductService {
+
+  constructor(private http: HttpClient) { }
+
+  sell(product: Product){
+    const bodyProduct = new URLSearchParams();
+    bodyProduct.set('name', product.name)
+    bodyProduct.set('price', product.price.toString())
+    bodyProduct.set('description', product.description)
+    bodyProduct.set('imageSrc', product.imageSrc)
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    })
+
+    return this.http.post('http://localhost:5000/sell', bodyProduct, {headers: headers})
+  }
+
+  getAllProducts() {
+    return this.http.get<Product[]>('http://localhost:5000/getAllProducts')
+  }
+}

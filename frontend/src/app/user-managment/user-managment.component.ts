@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core'
 import {TableModule} from 'primeng/table'
 import {TagModule} from 'primeng/tag'
 import {User} from '../shared/model/User'
@@ -11,7 +11,7 @@ import {UserService} from '../shared/services/user.service'
   styleUrl: './user-managment.component.scss',
   standalone: true
 })
-export class UserManagmentComponent {
+export class UserManagmentComponent implements OnInit{
   users!: User[];
 
   constructor(private userService: UserService){}
