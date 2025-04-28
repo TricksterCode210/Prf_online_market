@@ -3,6 +3,8 @@ import {MainClass} from '../main-class'
 import {PassportStatic} from 'passport'
 import {User} from '../model/User'
 import {Product} from '../model/Product'
+import multer from 'multer'
+import path from 'path'
 
 export const configureRoutes = (passport: PassportStatic, router: Router): Router => {
     router.get('/', (req: Request, res: Response) => {
@@ -60,20 +62,41 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
-    router.post('/sell', (req: Request, res: Response) => {
-        const name = req.body.name;
-        const price = req.body.price;
-        const description = req.body.description;
-        // const imageSrc = req.body.imageSrc
-        const imageSrc = "https://th.bing.com/th/id/OIP.BmmdpuEUMVafIL_kvGfdsAHaFj?rs=1&pid=ImgDetMain";
-        const username = req.body.username
-        const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc, username: username})
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, 'uploads/'); // ide menti a képeket
+        },
+        filename: function (req, file, cb) {
+            const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+            cb(null, uniqueSuffix + path.extname(file.originalname)); // pl: 12345678.jpg
+        }
+    })
 
-        product.save().then(data => {
-            res.status(200).send(data)
-        }).catch(error => {
-            res.status(500).send("Sikertelen feltöltés: " + error)
-        })
+    const upload = multer({storage: storage})
+
+    router.post('/sell', upload.single('imageSrc'), (req: Request, res: Response) => {
+        try
+        {
+            const name = req.body.name;
+            const price = req.body.price;
+            const description = req.body.description;
+            const imageSrc = req.file?.path
+            // const imageSrc = "https://th.bing.com/th/id/OIP.BmmdpuEUMVafIL_kvGfdsAHaFj?rs=1&pid=ImgDetMain";
+            const username = req.body.username
+            const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc, username: username})
+
+            product.save().then(data =>
+            {
+                res.status(200).send(data)
+            }).catch(error =>
+            {
+                res.status(500).send("Sikertelen feltöltés: " + error)
+            })
+        }
+        catch (err) {
+            console.error(err);
+            res.status(500).send({ message: "Error saving product" });
+        }
     })
 
     router.post('/logout', (req: Request, res: Response) => {

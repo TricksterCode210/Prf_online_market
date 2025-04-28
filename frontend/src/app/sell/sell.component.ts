@@ -11,7 +11,6 @@ import {TextareaModule} from 'primeng/textarea'
 import {InputNumberModule} from 'primeng/inputnumber'
 import {FileUpload} from 'primeng/fileupload'
 import {ProductService} from '../shared/services/product.service'
-import {map, of} from 'rxjs'
 import {Card} from 'primeng/card'
 import {Product} from '../shared/model/Product'
 
@@ -37,31 +36,16 @@ import {Product} from '../shared/model/Product'
 export class SellComponent implements OnInit
 {
   productForm!: FormGroup;
-  products!: Product[]
+  products!: Product[];
+  selectedFile!: File | null;   // <-- Hozzáadva: hogy elmentsd a kiválasztott képet
 
   constructor(
-      private formBuilder: FormBuilder,
-      private router: Router,
-      private productService: ProductService,
-      private authService: AuthService
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private productService: ProductService,
+    private authService: AuthService
   )
   {
-  }
-
-  onSubmit() {
-    if(this.productForm.valid) {
-      console.log("Form data: ", this.productForm.value);
-      this.productService.sell(this.productForm.value).subscribe({
-        next: (data) => {
-          console.log(data)
-          this.router.navigateByUrl('/buy')
-        }, error: (err) => {
-          console.log(err)
-        }
-      })
-    } else {
-      console.log("Ezt a rendelést nem tudja feladni")
-    }
   }
 
   ngOnInit()
@@ -70,7 +54,7 @@ export class SellComponent implements OnInit
       name: [''],
       description: [''],
       price: [''],
-      imageSrc: [],
+      imageSrc: [null],  // <-- változtatás: nem üres lista [] hanem null
       username: ['']
     });
 
@@ -86,11 +70,41 @@ export class SellComponent implements OnInit
         })
       }
     });
+  }
 
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];  // csak az elsőt vesszük
+    }
+  }
+
+  onSubmit() {
+    if (this.productForm.valid) {
+      const formData = new FormData();
+      formData.append('name', this.productForm.get('name')?.value);
+      formData.append('description', this.productForm.get('description')?.value);
+      formData.append('price', this.productForm.get('price')?.value);
+      formData.append('username', this.productForm.get('username')?.value);
+
+      if (this.selectedFile) {
+        formData.append('imageSrc', this.selectedFile);  // <-- a fájlt adod hozzá
+      }
+
+      this.productService.sell(formData).subscribe({
+        next: (data) => {
+          console.log(data);
+          this.router.navigateByUrl('/buy');
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
+    } else {
+      console.log("Nem valid a form!");
+    }
   }
 
   navigate(to: string) {
     this.router.navigateByUrl(to);
   }
-
 }

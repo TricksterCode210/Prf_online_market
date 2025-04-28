@@ -10,19 +10,8 @@ export class ProductService {
 
   constructor(private http: HttpClient) { }
 
-  sell(product: Product){
-    const bodyProduct = new URLSearchParams();
-    bodyProduct.set('name', product.name)
-    bodyProduct.set('price', product.price.toString())
-    bodyProduct.set('description', product.description)
-    bodyProduct.set('imageSrc', product.imageSrc)
-    bodyProduct.set('username', product.username)
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
-    })
-
-    return this.http.post('http://localhost:5000/sell', bodyProduct, {headers: headers})
+  sell(product: FormData) {
+    return this.http.post('http://localhost:5000/sell', product);
   }
 
   updateProduct(product: Product, id: string) {

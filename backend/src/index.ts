@@ -7,7 +7,6 @@ import passport from 'passport'
 import {configurePassport} from './passport/passport'
 import * as mongoose from 'mongoose'
 import cors from 'cors';
-import multer from 'multer';
 import path from 'path'
 
 const app = express()
@@ -20,22 +19,13 @@ mongoose.connect(dbUrl).then((data) => {
 	console.log("Sikertelen csatlakozás")
 })
 
-const storage = multer.diskStorage({
-	destination: function (req, file, cb) {
-		cb(null, 'uploads/'); // ide menti a képeket
-	},
-	filename: function (req, file, cb) {
-		const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-		cb(null, uniqueSuffix + path.extname(file.originalname)); // pl: 12345678.jpg
-	}
-})
-
-const upload = multer({storage: storage})
+// FONTOS: Előbb a static serve
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
 const whitelist = ['http://localhost:4200']
 const corsOptions = {
 	origin: (origin: string | undefined, callback: (error: Error | null, allowed: boolean) => void) => {
-		if(whitelist.indexOf(origin!) !== -1){
+		if(!origin || whitelist.indexOf(origin!) !== -1){
 			callback(null, true)
 		} else {
 			callback(new Error('Nem engedélyezett'), false)
