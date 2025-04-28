@@ -113,6 +113,28 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
+    router.get('/getProduct/:id', (req: Request, res: Response) => {
+        const productId = req.params.id;
+        const query = Product.findById(productId);
+        query.then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            console.log(error)
+            res.status(500).send(error)
+        })
+    })
+
+    router.delete('/buying/:id', (req:Request, res: Response) => {
+        const id = req.params.id
+        const query = Product.findByIdAndDelete(id)
+        query.then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            console.log(error)
+            res.status(500).send(error)
+        })
+    })
+
     router.get('/checkAuth', (req: Request, res: Response) => {
         if (req.isAuthenticated()) {
             res.status(200).send(true);

@@ -27,4 +27,13 @@ export class ProductService {
   getAllProducts() {
     return this.http.get<Product[]>('http://localhost:5000/getAllProducts')
   }
+
+  getProduct(id: string) {
+    return this.http.get<Product>('http://localhost:5000/getProduct/' + id)
+  }
+
+  buyingProduct(id: string){
+
+    return this.http.delete("http://localhost:5000/buying/" + id)
+  }
 }

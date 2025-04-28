@@ -9,7 +9,7 @@
         <ng-template #subtitle> {{ product.price }} Ft</ng-template>
         <p>{{ product.description }}</p>
         <ng-template #footer>
-          <p-button type="button" label="Bővebben"/>
+          <p-button type="button" (onClick)="navigate('/buy/' + product._id)" label="Bővebben"/>
         </ng-template>
       </p-card>
     </div>

@@ -4,20 +4,22 @@ import {MenuItem} from 'primeng/api'
 import {Router, RouterLink} from '@angular/router'
 import {Button} from 'primeng/button'
 import {AuthService} from '../shared/services/auth.service'
-import {NgIf} from '@angular/common'
+import {AsyncPipe, NgIf} from '@angular/common'
 import {authGuard} from '../shared/guards/auth.guard'
+import {Observable} from 'rxjs'
 
 @Component({
   selector: 'app-navbar',
-  imports: [Menubar, RouterLink, Button, NgIf],
+  imports: [Menubar, RouterLink, Button, NgIf, AsyncPipe],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   standalone: true
 })
 export class NavbarComponent implements OnInit {
   pages: MenuItem[] | undefined;
+  isAuth!: boolean;
 
-  constructor(private authService: AuthService, private router: Router)
+  constructor(protected authService: AuthService, private router: Router)
   {
   }
 
@@ -44,6 +46,12 @@ export class NavbarComponent implements OnInit {
         link: "/users"
       }
     ]
+
+    this.authService.checkAuth().subscribe(result => {
+      next: this.isAuth = result.valueOf()
+    }, (err) => {
+      console.log(err)
+    })
   }
 
   logout() {
@@ -56,5 +64,4 @@ export class NavbarComponent implements OnInit {
       }
     })
   }
-
 }

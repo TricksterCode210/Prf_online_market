@@ -1,0 +1,7 @@
+<div *ngIf="product">
+  <p>{{product.name}}</p>
+  <p>{{product.description}}</p>
+  <p>{{product.price}}</p>
+  <img src="{{product.imageSrc}}" alt="Kép">
+  <p-button type="button" label="Vásárlás" (onClick)="buyingProduct()"/>
+</div>

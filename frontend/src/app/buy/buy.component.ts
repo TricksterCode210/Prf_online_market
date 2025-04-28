@@ -5,6 +5,7 @@ import {Card} from 'primeng/card'
 import {Button} from 'primeng/button'
 import {NgForOf} from '@angular/common';
 import {Splitter} from 'primeng/splitter'
+import {Router} from '@angular/router'
 
 @Component({
   selector: 'app-buy',
@@ -21,7 +22,7 @@ import {Splitter} from 'primeng/splitter'
 export class BuyComponent implements OnInit{
   products!: Product[];
 
-  constructor(private productService: ProductService)
+  constructor(private productService: ProductService, private router: Router)
   {
   }
 
@@ -33,5 +34,9 @@ export class BuyComponent implements OnInit{
         console.log(err)
       }
     })
+  }
+
+  navigate(to: string){
+    this.router.navigateByUrl(to);
   }
 }

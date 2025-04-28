@@ -8,9 +8,9 @@
     </ng-template>
     <ng-template #end>
       <div class="flex items-center gap-2">
-        <p-button routerLink="/login" label="Bejelentkezés" class="nav-button"/>
-        <p-button routerLink="/register" label="Regisztráció"  severity="info" class="nav-button"/>
-        <p-button label="Kijelentkezés" (onClick)="logout()" severity="danger" class="nav-button"/>
+        <p-button *ngIf="!isAuth" routerLink="/login" label="Bejelentkezés" class="nav-button"/>
+        <p-button *ngIf="!isAuth" routerLink="/register" label="Regisztráció"  severity="info" class="nav-button"/>
+        <p-button *ngIf="isAuth" label="Kijelentkezés" (onClick)="logout()" severity="danger" class="nav-button"/>
       </div>
     </ng-template>
   </p-menubar>
