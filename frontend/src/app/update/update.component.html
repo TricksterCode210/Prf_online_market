@@ -1,0 +1,21 @@
+<div class="login-container">
+  <form class="login-form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <p-float-label variant="on">
+      <input pInputText id="name" formControlName="name"/>
+      <label for="name">Termék neve</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <p-inputnumber mode="currency" currency="HUF" locale="hu-HU" [minFractionDigits]="0" inputId="money" formControlName="price"/>
+      <label for="money">Termék ára</label>
+    </p-float-label>
+    <p-float-label variant="on">
+      <textarea pTextarea rows="5" cols="40" id="description" formControlName="description"></textarea>
+      <label for="description">Termék leírása</label>
+    </p-float-label>
+    <input type="file" id="image" accept="image/*" (change)="onFileSelected($event)"/>
+    <div>
+      <p-button type="submit" label="Módosítás"/>
+      <p-button type="button" (onClick)="navigate('/sell')" label="Mégsem" severity="danger"/>
+    </div>
+  </form>
+</div>

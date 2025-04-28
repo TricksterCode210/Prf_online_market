@@ -25,6 +25,21 @@ export class ProductService {
     return this.http.post('http://localhost:5000/sell', bodyProduct, {headers: headers})
   }
 
+  updateProduct(product: Product, id: string) {
+    const bodyProduct = new URLSearchParams();
+    bodyProduct.set('name', product.name)
+    bodyProduct.set('price', product.price.toString())
+    bodyProduct.set('description', product.description)
+    bodyProduct.set('imageSrc', product.imageSrc)
+    bodyProduct.set('username', product.username)
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    })
+
+    return this.http.patch('http://localhost:5000/update/' + id, bodyProduct, {headers: headers})
+  }
+
   getAllProducts() {
     return this.http.get<Product[]>('http://localhost:5000/getAllProducts')
   }
