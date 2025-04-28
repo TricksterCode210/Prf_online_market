@@ -15,26 +15,21 @@ export const configurePassport = (passport: PassportStatic): PassportStatic =>
 		done(null, user);
 	})
 
-	passport.use('local', new Strategy((username, password, done) =>
+	passport.use('local', new Strategy(async (username, password, done) =>
 	{
-		const query = User.findOne({username: username});
-		query.then(user => {
-			if(user)
-			{
-				user.comparePassword(password, (err, _) => {
-					if(err) {
-						done('Helytelen jelszó')
-					}
-					else {
-						done(null, user);
-					}
-				})
-			} else {
-				done(null, undefined);
+		const user = await User.findOne({username: username});
+		if(!user){
+			return done("Helytelen felhasználónév vagy jelszó");
+		}
+		user.comparePassword(password, (error, isMatch) => {
+			if (error){
+				done("Helytelen felhasználónév vagy jelszó");
+			} else if (isMatch){
+				done(null, user);
+			} else{
+				done("Helytelen jelszó");
 			}
-		}).catch(error => {
-			done(error);
-		})
+		});
 	}))
 
 	return passport

@@ -6,7 +6,7 @@ interface IUser extends Document {
     email: string;
     password: string;
     username: string;
-    seller: string;
+    userRole: string;
     address: string;
     name: string;
     comparePassword: (candidatePassword: string, callback: (error: Error | null, isMatch: boolean) => void) => void;
@@ -16,7 +16,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
     email: {type: String, required: true},
     password: {type: String, required: true},
     username: {type: String, required: true},
-    seller: {type: String, required: true},
+    userRole: {type: String, required: true},
     address: {type: String, required: false},
     name: {type: String, required: false},
 })

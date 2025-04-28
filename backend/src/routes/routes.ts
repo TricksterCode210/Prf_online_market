@@ -48,10 +48,10 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         const email = req.body.email;
         const password = req.body.password;
         const username = req.body.username;
-        const seller = req.body.seller;
+        const userRole = req.body.userRole;
         const address = req.body.address;
         const name = req.body.name;
-        const user = new User({email: email, password: password, username: username, seller: seller, address: address, name: name});
+        const user = new User({email: email, password: password, username: username, userRole: userRole, address: address, name: name});
 
         user.save().then(data => {
             res.status(200).send(data);
@@ -140,6 +140,14 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
             res.status(200).send(true);
         } else {
             res.status(500).send(false);
+        }
+    })
+
+    router.get('/loggedInUser', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            res.status(200).send(req.user);
+        } else {
+            res.status(500).send(null);
         }
     })
 

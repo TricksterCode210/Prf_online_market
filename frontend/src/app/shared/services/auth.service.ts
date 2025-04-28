@@ -16,7 +16,7 @@ export class AuthService {
     bodyRegister.set('address', user.address)
     bodyRegister.set('email', user.email)
     bodyRegister.set('password', user.password)
-    bodyRegister.set('seller', user.seller)
+    bodyRegister.set('userRole', user.userRole)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -43,5 +43,9 @@ export class AuthService {
 
   checkAuth() {
     return this.http.get<boolean>('http://localhost:5000/checkAuth', {withCredentials: true})
+  }
+
+  loggedInUser() {
+    return this.http.get<User>('http://localhost:5000/loggedInUser', {withCredentials: true})
   }
 }

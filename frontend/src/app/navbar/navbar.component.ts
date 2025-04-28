@@ -5,8 +5,6 @@ import {Router, RouterLink} from '@angular/router'
 import {Button} from 'primeng/button'
 import {AuthService} from '../shared/services/auth.service'
 import {AsyncPipe, NgIf} from '@angular/common'
-import {authGuard} from '../shared/guards/auth.guard'
-import {Observable} from 'rxjs'
 
 @Component({
   selector: 'app-navbar',
@@ -47,10 +45,14 @@ export class NavbarComponent implements OnInit {
       }
     ]
 
-    this.authService.checkAuth().subscribe(result => {
-      next: this.isAuth = result.valueOf()
-    }, (err) => {
-      console.log(err)
+    this.authService.checkAuth().subscribe({
+      next: (result) => {
+        this.isAuth = result
+      },
+      error: (err) => {
+        this.isAuth = false
+        console.log(err)
+      }
     })
   }
 
