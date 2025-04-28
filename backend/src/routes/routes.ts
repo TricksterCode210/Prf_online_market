@@ -66,7 +66,8 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         const description = req.body.description;
         // const imageSrc = req.body.imageSrc
         const imageSrc = "https://th.bing.com/th/id/OIP.BmmdpuEUMVafIL_kvGfdsAHaFj?rs=1&pid=ImgDetMain";
-        const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc})
+        const username = req.body.username
+        const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc, username: username})
 
         product.save().then(data => {
             res.status(200).send(data)
@@ -105,6 +106,17 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
 
     router.get('/getAllProducts', (req: Request, res: Response) => {
         const query = Product.find();
+        query.then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            console.log(error)
+            res.status(500).send(error)
+        })
+    })
+
+    router.get('/getAllProductsByUser/:username', (req: Request, res: Response) => {
+        const username = req.params.username;
+        const query = Product.find({username: username})
         query.then(data => {
             res.status(200).send(data)
         }).catch(error => {

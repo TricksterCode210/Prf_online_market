@@ -11,6 +11,9 @@ import {TextareaModule} from 'primeng/textarea'
 import {InputNumberModule} from 'primeng/inputnumber'
 import {FileUpload} from 'primeng/fileupload'
 import {ProductService} from '../shared/services/product.service'
+import {map, of} from 'rxjs'
+import {Card} from 'primeng/card'
+import {Product} from '../shared/model/Product'
 
 @Component({
   selector: 'app-sell',
@@ -23,7 +26,8 @@ import {ProductService} from '../shared/services/product.service'
     ReactiveFormsModule,
     TextareaModule,
     InputNumberModule,
-    FileUpload
+    FileUpload,
+    Card
   ],
   providers: [],
   templateUrl: './sell.component.html',
@@ -33,11 +37,13 @@ import {ProductService} from '../shared/services/product.service'
 export class SellComponent implements OnInit
 {
   productForm!: FormGroup;
+  products!: Product[]
 
   constructor(
       private formBuilder: FormBuilder,
       private router: Router,
-      private productService: ProductService
+      private productService: ProductService,
+      private authService: AuthService
   )
   {
   }
@@ -64,8 +70,23 @@ export class SellComponent implements OnInit
       name: [''],
       description: [''],
       price: [''],
-      imageSrc: []
-    })
+      imageSrc: [],
+      username: ['']
+    });
+
+    this.authService.loggedInUser().subscribe(user => {
+      if (user) {
+        this.productForm.patchValue({ username: user.username });
+        this.productService.getAllProductsByUser(user.username).subscribe({
+          next: (data) => {
+            this.products = data
+          }, error: (err) => {
+            console.log(err)
+          }
+        })
+      }
+    });
+
   }
 
   navigate(to: string) {

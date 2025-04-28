@@ -5,13 +5,15 @@ interface IProduct extends Document {
 	price: number;
 	description: string;
 	imageSrc: string;
+	username: string;
 }
 
 const ProductSchema: Schema<IProduct> = new mongoose.Schema({
 	name: {type: String, required:true},
 	price: {type: Number, required:true},
 	description: {type: String, required:true},
-	imageSrc: {type: String, required:true}
+	imageSrc: {type: String, required:true},
+	username: {type: String, required: true}
 })
 
 export const Product: Model<IProduct> = mongoose.model<IProduct>('Product', ProductSchema);

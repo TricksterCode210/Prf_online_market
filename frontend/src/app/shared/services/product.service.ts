@@ -16,6 +16,7 @@ export class ProductService {
     bodyProduct.set('price', product.price.toString())
     bodyProduct.set('description', product.description)
     bodyProduct.set('imageSrc', product.imageSrc)
+    bodyProduct.set('username', product.username)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -30,6 +31,10 @@ export class ProductService {
 
   getProduct(id: string) {
     return this.http.get<Product>('http://localhost:5000/getProduct/' + id)
+  }
+
+  getAllProductsByUser(username: string){
+    return this.http.get<Product[]>('http://localhost:5000/getAllProductsByUser/' + username)
   }
 
   buyingProduct(id: string){
