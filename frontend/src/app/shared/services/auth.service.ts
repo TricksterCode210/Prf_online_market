@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable, signal} from '@angular/core'
 import {HttpClient, HttpHeaders} from '@angular/common/http'
 import {User} from '../model/User'
+import {tap} from 'rxjs'
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private _isAuthenticated = signal(false);
+  isAuthenticated = this._isAuthenticated.asReadonly();
 
   constructor(private http: HttpClient) { }
 
@@ -34,15 +37,27 @@ export class AuthService {
       'Content-Type': 'application/x-www-form-urlencoded'
     })
 
-    return this.http.post('http://localhost:5000/login', bodyLogin, {headers: headers, withCredentials: true})
+    return this.http.post('http://localhost:5000/login', bodyLogin, {headers: headers, withCredentials: true}).pipe(
+      tap(() => {
+        this._isAuthenticated.set(true);
+      })
+    );
   }
 
   logout(){
-    return this.http.post('http://localhost:5000/logout', {}, {withCredentials: true, responseType: 'text'})
+    return this.http.post('http://localhost:5000/logout', {}, {withCredentials: true, responseType: 'text'}).pipe(
+      tap(() => {
+        this._isAuthenticated.set(false);
+      })
+    );
   }
 
   checkAuth() {
-    return this.http.get<boolean>('http://localhost:5000/checkAuth', {withCredentials: true})
+    return this.http.get<boolean>('http://localhost:5000/checkAuth', {withCredentials: true}).pipe(
+      tap((auth) => {
+        this._isAuthenticated.set(auth);
+      })
+    );
   }
 
   loggedInUser() {
