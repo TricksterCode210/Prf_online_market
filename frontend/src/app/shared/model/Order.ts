@@ -1,4 +1,5 @@
 export interface Order {
+  _id: string;
   buyerName: string;
   productName: string;
   price: number;

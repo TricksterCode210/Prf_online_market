@@ -23,4 +23,8 @@ export class OrderService {
 
     return this.http.post('http://localhost:5000/makeOrder', bodyOrder, {headers: headers})
   }
+
+  getAllOrders() {
+    return this.http.get<Order[]>('http://localhost:5000/getAllOrders', {withCredentials: true});
+  }
 }

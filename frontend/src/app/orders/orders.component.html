@@ -1,0 +1,34 @@
+<div class="container-fluid text-center">
+  <h1>Beérkezett megrendeléseim</h1>
+  <p-table [value]="orders" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="5" stripedRows [rowsPerPageOptions]="[1, 5, 10, 20]">
+    <ng-template #header>
+      <tr>
+        <th>Gombok</th>
+        <th>Megrendelő neve</th>
+        <th>Szállítási cím</th>
+        <th>Termék neve</th>
+        <th>Ára</th>
+        <th>Kép</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-order>
+      <tr>
+        <td>
+          <p-button (onClick)="deleteOrder(order._id)" label="Visszautasítás" severity="danger"/>
+        <p-button (onClick)="shipOrder(order._id)" label="Elfogadás" class="mx-3"/></td>
+        <td>{{ order.buyerName }}</td>
+        <td>{{ order.productName }}</td>
+        <td>{{ order.price }} Ft</td>
+        <td>{{ order.shippingAddress }}</td>
+        <p-image
+          [src]="'http://localhost:5000/' + order.imageSrc"
+          [alt]="order.productName"
+          [preview]="true"
+          width="320"
+          height="180"
+          class="rounded"
+        />
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

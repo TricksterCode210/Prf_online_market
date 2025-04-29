@@ -127,6 +127,20 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         }
     })
 
+    router.get('/getAllOrders', (req: Request, res: Response) => {
+        if (req.isAuthenticated()) {
+            const query = Order.find();
+            query.then(data => {
+                res.status(200).send(data)
+            }).catch(error => {
+                console.log(error)
+                res.status(500).send(error)
+            })
+        } else {
+            res.status(500).send("User is not logged in");
+        }
+    })
+
     router.get('/getAllProducts', (req: Request, res: Response) => {
         const query = Product.find();
         query.then(data => {
