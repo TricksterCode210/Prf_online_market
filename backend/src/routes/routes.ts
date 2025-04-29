@@ -5,6 +5,7 @@ import {User} from '../model/User'
 import {Product} from '../model/Product'
 import multer from 'multer'
 import path from 'path'
+import {Order} from '../model/Order'
 
 export const configureRoutes = (passport: PassportStatic, router: Router): Router => {
     router.get('/', (req: Request, res: Response) => {
@@ -81,7 +82,6 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
             const price = req.body.price;
             const description = req.body.description;
             const imageSrc = req.file?.path
-            // const imageSrc = "https://th.bing.com/th/id/OIP.BmmdpuEUMVafIL_kvGfdsAHaFj?rs=1&pid=ImgDetMain";
             const username = req.body.username
             const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc, username: username})
 
@@ -167,6 +167,23 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
             res.status(200).send(data)
         }).catch(error => {
             res.status(500).send("Sikertelen módosítás: " + error)
+        })
+    })
+
+
+    router.post('/makeOrder', (req:Request, res: Response) => {
+        const buyerName = req.body.buyerName;
+        const productName = req.body.productName;
+        const price = req.body.price;
+        const shippingAddress = req.body.shippingAddress;
+        const imageSrc = req.body.imageSrc
+        const order = new Order({buyerName: buyerName, productName: productName, price: price, shippingAddress: shippingAddress, imageSrc: imageSrc})
+        order.save().then(data =>
+        {
+            res.status(200).send(data)
+        }).catch(error =>
+        {
+            res.status(500).send("Sikertelen feltöltés: " + error)
         })
     })
 

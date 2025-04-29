@@ -54,7 +54,7 @@ export class SellComponent implements OnInit
       name: [''],
       description: [''],
       price: [''],
-      imageSrc: [null],  // <-- változtatás: nem üres lista [] hanem null
+      imageSrc: [null],
       username: ['']
     });
 
@@ -87,7 +87,7 @@ export class SellComponent implements OnInit
       formData.append('username', this.productForm.get('username')?.value);
 
       if (this.selectedFile) {
-        formData.append('imageSrc', this.selectedFile);  // <-- a fájlt adod hozzá
+        formData.append('imageSrc', this.selectedFile);
       }
 
       this.productService.sell(formData).subscribe({

@@ -26,7 +26,7 @@
       <div class="col-4 mt-5" *ngFor="let product of products">
         <p-card class="justify-content-center text-center h-100 w-100" >
           <ng-template #header>
-            <img alt="Kép" src="{{product.imageSrc}}"/>
+            <img alt="Kép" src="http://localhost:5000/{{product.imageSrc}}"/>
           </ng-template>
           <ng-template #title> {{ product.name }}</ng-template>
           <ng-template #subtitle> {{ product.price }} Ft</ng-template>

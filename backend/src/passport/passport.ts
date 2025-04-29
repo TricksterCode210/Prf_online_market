@@ -6,12 +6,10 @@ export const configurePassport = (passport: PassportStatic): PassportStatic =>
 {
 
 	passport.serializeUser((user: Express.User, done) => {
-		console.log("Felhasználó szérializálva")
 		done(null, user);
 	})
 
 	passport.deserializeUser((user: Express.User, done) => {
-		console.log("Felhasználó nincs szérializálva már")
 		done(null, user);
 	})
 
