@@ -230,6 +230,16 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
+    router.get('/getAllShipping',(req: Request, res: Response) => {
+        const query = Shipping.find();
+        query.then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            console.log(error)
+            res.status(500).send(error)
+        })
+    })
+
     router.get('/getProduct/:id', (req: Request, res: Response) => {
         const productId = req.params.id;
         const query = Product.findById(productId);
