@@ -1,1 +1,61 @@
-<p>home works!</p>
+<div class="container">
+  <div class="row justify-content-center text-center">
+    <h1>Üdvözlünk az online piactéren!</h1>
+    <p>Ha vásárolni szeretnél vagy eladni akkor készíts magadnak felhasználót</p>
+    <p>Böngéssz kedved szerint és találd meg a magadnak megfelelő terméket</p>
+    <div class="col-6">
+      <p-card class="justify-content-center text-center h-100 w-100" >
+        <ng-template #header>
+          <i class="pi pi-money-bill" style="font-size: 5rem"></i>
+        </ng-template>
+        <ng-template #title> Termék eladás</ng-template>
+        <ng-template #subtitle> Eladóként itt tudsz termékeket meghirdetni és aktív megrendeléseidet módosítani </ng-template>
+        <p>Az eladott termékek teljes mértékben az Ön pénztárcáját fogja növelni</p>
+        <ng-template #footer>
+          <p-button type="button" (onClick)="navigate('/sell')" label="Termék eladás"/>
+        </ng-template>
+      </p-card>
+    </div>
+    <div class="col-6">
+      <p-card class="justify-content-center text-center h-100 w-100" >
+        <ng-template #header>
+          <i class="pi pi-shopping-cart" style="font-size: 5rem"></i>
+        </ng-template>
+        <ng-template #title> Termék vásárlás</ng-template>
+        <ng-template #subtitle> Vásárlóként itt tudsz keresgélni a meghirdetett termékek között </ng-template>
+        <p>Ha szerencsés vagy itt könnyen megtalálod a hozzád illő termékeket jó áron</p>
+        <ng-template #footer>
+          <p-button type="button" (onClick)="navigate('/buy')" label="Termék vásárlás"/>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+  <div class="row my-4">
+    <div class="col-6">
+      <p-card class="justify-content-center text-center h-100 w-100" >
+        <ng-template #header>
+          <i class="pi pi-shop" style="font-size: 5rem"></i>
+        </ng-template>
+        <ng-template #title> Megrendeléseim</ng-template>
+        <ng-template #subtitle> Eladóként itt tudod megnézni milyen megrendeléseket kértek tőled </ng-template>
+        <p>Innen indíthatod a kiszállításaidat, hogy a megrendelők boldogan élvezzék a vásárolt termékeiket</p>
+        <ng-template #footer>
+          <p-button type="button" (onClick)="navigate('/orders')" label="Megrendelések"/>
+        </ng-template>
+      </p-card>
+    </div>
+    <div class="col-6">
+      <p-card class="justify-content-center text-center h-100 w-100" >
+        <ng-template #header>
+          <i class="pi pi-money-bill" style="font-size: 5rem"></i>
+        </ng-template>
+        <ng-template #title> Kiszállítás</ng-template>
+        <ng-template #subtitle> Kövesd az eladott/vásárolt termékek kiszállítását </ng-template>
+        <p>Itt láthatod korábbi és folyamatban lévő vásárlásaidat, hogy honnan hova megy és a várható érkezést</p>
+        <ng-template #footer>
+          <p-button type="button" (onClick)="navigate('/shipping')" label="Kiszállítás"/>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>

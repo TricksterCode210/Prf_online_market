@@ -42,6 +42,16 @@ export class NavbarComponent implements OnInit {
         label: "Felhasználók",
         icon: "pi pi-user",
         link: "/users"
+      },
+      {
+        label: "Megrendelések",
+        icon: "pi pi-shop",
+        link: "/orders"
+      },
+      {
+        label: "Kiszállítás",
+        icon: "pi pi-truck",
+        link: "/shipping"
       }
     ]
 
