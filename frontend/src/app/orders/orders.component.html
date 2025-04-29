@@ -9,6 +9,7 @@
         <th>Termék neve</th>
         <th>Ára</th>
         <th>Kép</th>
+        <th>Értékesítő</th>
       </tr>
     </ng-template>
     <ng-template #body let-order>
@@ -28,6 +29,7 @@
           height="180"
           class="rounded"
         />
+        <td>{{order.sellerName}}</td>
       </tr>
     </ng-template>
   </p-table>

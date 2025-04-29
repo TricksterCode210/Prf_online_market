@@ -187,11 +187,12 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
 
     router.post('/makeOrder', (req:Request, res: Response) => {
         const buyerName = req.body.buyerName;
+        const sellerName = req.body.sellerName;
         const productName = req.body.productName;
         const price = req.body.price;
         const shippingAddress = req.body.shippingAddress;
         const imageSrc = req.body.imageSrc
-        const order = new Order({buyerName: buyerName, productName: productName, price: price, shippingAddress: shippingAddress, imageSrc: imageSrc})
+        const order = new Order({buyerName: buyerName, productName: productName, price: price, shippingAddress: shippingAddress, imageSrc: imageSrc, sellerName: sellerName})
         order.save().then(data =>
         {
             res.status(200).send(data)

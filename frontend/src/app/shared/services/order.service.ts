@@ -12,6 +12,7 @@ export class OrderService {
   makeOrder(order: Order){
     const bodyOrder = new URLSearchParams();
     bodyOrder.set('buyerName', order.buyerName)
+    bodyOrder.set('sellerName', order.sellerName)
     bodyOrder.set('price', order.price.toString())
     bodyOrder.set('productName', order.productName)
     bodyOrder.set('imageSrc', order.imageSrc)

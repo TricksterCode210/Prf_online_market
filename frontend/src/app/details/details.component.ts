@@ -35,6 +35,7 @@ export class DetailsComponent {
   ngOnInit() {
     this.orderForm = this.formBuilder.group({
       buyerName: [''],
+      sellerName: [''],
       productName: [''],
       price: [''],
       shippingAddress: [''],
@@ -50,7 +51,7 @@ export class DetailsComponent {
     const productId = this.router.url.split('/')[2]
     this.productService.getProduct(productId).subscribe({
       next: (data) => {
-        this.orderForm.patchValue({ productName: data.name, price: data.price, imageSrc: data.imageSrc })
+        this.orderForm.patchValue({ productName: data.name, price: data.price, imageSrc: data.imageSrc, sellerName: data.username })
         this.product = data
       }, error: (err) => {
         console.log(err)

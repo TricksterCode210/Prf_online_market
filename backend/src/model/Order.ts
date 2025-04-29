@@ -2,6 +2,7 @@ import mongoose, {Schema, Document, Model} from 'mongoose'
 
 interface IOrder extends Document {
 	buyerName: string;
+	sellerName: string;
 	productName: string;
 	price: number;
 	shippingAddress: string;
@@ -10,6 +11,7 @@ interface IOrder extends Document {
 
 const OrderSchema: Schema<IOrder> = new mongoose.Schema({
 	buyerName: {type: String, required:true},
+	sellerName: {type: String, required:true},
 	productName: {type: String, required:true},
 	price: {type: Number, required:true},
 	shippingAddress: {type: String, required:true},
