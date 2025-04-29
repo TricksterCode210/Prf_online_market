@@ -6,6 +6,7 @@ import {Product} from '../model/Product'
 import multer from 'multer'
 import path from 'path'
 import {Order} from '../model/Order'
+import {Shipping} from '../model/Shipping'
 
 export const configureRoutes = (passport: PassportStatic, router: Router): Router => {
     router.get('/', (req: Request, res: Response) => {
@@ -202,6 +203,33 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
+    router.post('/shipping', (req:Request, res: Response) => {
+        const from = req.body.from
+        const to = req.body.to
+        const buyer = req.body.buyer
+        const seller = req.body.seller
+        const arrivalFirst = req.body.arrivalFirst
+        const arrivalLast = req.body.arrivalLast
+        const productName = req.body.productName
+        const shipping = new Shipping(
+            {
+                from: from,
+                to: to,
+                buyer: buyer,
+                seller: seller,
+                arrivalFirst: arrivalFirst,
+                arrivalLast: arrivalLast,
+                productName: productName
+            })
+        shipping.save().then(data =>
+        {
+            res.status(200).send(data)
+        }).catch(error =>
+        {
+            res.status(500).send("Sikertelen feltöltés: " + error)
+        })
+    })
+
     router.get('/getProduct/:id', (req: Request, res: Response) => {
         const productId = req.params.id;
         const query = Product.findById(productId);
@@ -216,6 +244,17 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
     router.delete('/buying/:id', (req:Request, res: Response) => {
         const id = req.params.id
         const query = Product.findByIdAndDelete(id)
+        query.then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            console.log(error)
+            res.status(500).send(error)
+        })
+    })
+
+    router.delete('/shipOrder/:id', (req:Request, res: Response) => {
+        const id = req.params.id
+        const query = Order.findByIdAndDelete(id)
         query.then(data => {
             res.status(200).send(data)
         }).catch(error => {

@@ -28,4 +28,8 @@ export class OrderService {
   getAllOrders() {
     return this.http.get<Order[]>('http://localhost:5000/getAllOrders', {withCredentials: true});
   }
+
+  shipOrder(id: string) {
+    return this.http.delete("http://localhost:5000/shipOrder/" + id)
+  }
 }
