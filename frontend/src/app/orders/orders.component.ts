@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup} from '@angular/forms'
 import {AuthService} from '../shared/services/auth.service'
 import {Router} from '@angular/router'
 import {ShippingService} from '../shared/services/shipping.service'
+import {ProductService} from '../shared/services/product.service'
 
 @Component({
   selector: 'app-orders',
@@ -26,7 +27,8 @@ export class OrdersComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private shippingService: ShippingService
+    private shippingService: ShippingService,
+    private productService: ProductService
     ){}
 
   ngOnInit()
@@ -63,7 +65,14 @@ export class OrdersComponent implements OnInit {
 
   deleteOrder(id: string)
   {
-    console.log('Törlés: ' + id)
+    this.orderService.deleteOrder(id).subscribe({
+      next: (data) => {
+        this.activateProduct(id)
+        console.log("Sikeres vásárlás")
+      }, error: (err) => {
+        console.log("Sikertelen vásárlás: " + err)
+      }
+    })
   }
 
   shipOrder(id:string)
@@ -74,12 +83,23 @@ export class OrdersComponent implements OnInit {
       buyer: order?.buyerName,
       productName: order?.productName
     });
-    this.orderService.shipOrder(id).subscribe({
+    this.orderService.deleteOrder(id).subscribe({
       next: (data) => {
+        this.deleteProduct(order?.productId)
         this.makeShipping()
         console.log("Sikeres vásárlás")
       }, error: (err) => {
         console.log("Sikertelen vásárlás: " + err)
+      }
+    })
+  }
+
+  deleteProduct(productId: string | undefined){
+    this.productService.deleteProduct(productId).subscribe({
+      next: (data) => {
+        console.log("Sikeres törlés")
+      }, error: (err) => {
+        console.log(err)
       }
     })
   }
@@ -92,6 +112,17 @@ export class OrdersComponent implements OnInit {
         this.navigate("/shipping")
       }, error: (err) => {
         console.log("Sikertelen mentés: " + err.toString())
+      }
+    })
+  }
+
+  activateProduct(id: string) {
+    const order = this.orders.find(order =>order._id === id)
+    this.productService.changeState(order?.productId, 'ACTIVE').subscribe({
+      next: (data) => {
+        console.log("Sikeres módosítás")
+      }, error: (err) => {
+        console.log("Sikertelen módosítás: " + err)
       }
     })
   }

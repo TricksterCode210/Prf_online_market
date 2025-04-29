@@ -84,7 +84,8 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
             const description = req.body.description;
             const imageSrc = req.file?.path
             const username = req.body.username
-            const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc, username: username})
+            const state = req.body.state
+            const product = new Product({name: name, price: price, description: description, imageSrc: imageSrc, username: username, state: state})
 
             product.save().then(data =>
             {
@@ -142,8 +143,8 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         }
     })
 
-    router.get('/getAllProducts', (req: Request, res: Response) => {
-        const query = Product.find();
+    router.get('/getAllActiveProducts', (req: Request, res: Response) => {
+        const query = Product.find({state: 'ACTIVE'});
         query.then(data => {
             res.status(200).send(data)
         }).catch(error => {
@@ -193,7 +194,8 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         const price = req.body.price;
         const shippingAddress = req.body.shippingAddress;
         const imageSrc = req.body.imageSrc
-        const order = new Order({buyerName: buyerName, productName: productName, price: price, shippingAddress: shippingAddress, imageSrc: imageSrc, sellerName: sellerName})
+        const productId = req.body.productId
+        const order = new Order({buyerName: buyerName, productName: productName, price: price, shippingAddress: shippingAddress, imageSrc: imageSrc, sellerName: sellerName, productId: productId})
         order.save().then(data =>
         {
             res.status(200).send(data)
@@ -251,7 +253,17 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
-    router.delete('/buying/:id', (req:Request, res: Response) => {
+    router.patch('/changeState/:id', (req:Request, res: Response) => {
+        const id = req.params.id
+        const state = req.body.state;
+        Product.updateOne({_id: id}, {state: state}).then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            res.status(500).send("Sikertelen módosítás: " + error)
+        })
+    })
+
+    router.delete('/deleteProduct/:id', (req:Request, res: Response) => {
         const id = req.params.id
         const query = Product.findByIdAndDelete(id)
         query.then(data => {
@@ -262,7 +274,7 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
-    router.delete('/shipOrder/:id', (req:Request, res: Response) => {
+    router.delete('/deleteOrder/:id', (req:Request, res: Response) => {
         const id = req.params.id
         const query = Order.findByIdAndDelete(id)
         query.then(data => {

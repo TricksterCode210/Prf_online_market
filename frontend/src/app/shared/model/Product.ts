@@ -5,4 +5,5 @@ export interface Product {
   description: string;
   imageSrc: string;
   username: string;
+  state: string;
 }

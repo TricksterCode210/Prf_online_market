@@ -6,7 +6,8 @@ interface IOrder extends Document {
 	productName: string;
 	price: number;
 	shippingAddress: string;
-	imageSrc: string
+	imageSrc: string,
+	productId: string
 }
 
 const OrderSchema: Schema<IOrder> = new mongoose.Schema({
@@ -15,7 +16,8 @@ const OrderSchema: Schema<IOrder> = new mongoose.Schema({
 	productName: {type: String, required:true},
 	price: {type: Number, required:true},
 	shippingAddress: {type: String, required:true},
-	imageSrc: {type: String, required:true}
+	imageSrc: {type: String, required:true},
+	productId: {type: String, required:true}
 })
 
 export const Order: Model<IOrder> = mongoose.model<IOrder>('Order', OrderSchema)

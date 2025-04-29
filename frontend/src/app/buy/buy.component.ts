@@ -4,7 +4,6 @@ import {ProductService} from '../shared/services/product.service'
 import {Card} from 'primeng/card'
 import {Button} from 'primeng/button'
 import {NgForOf} from '@angular/common';
-import {Splitter} from 'primeng/splitter'
 import {Router} from '@angular/router'
 
 @Component({
@@ -12,8 +11,7 @@ import {Router} from '@angular/router'
   imports: [
     Card,
     Button,
-    NgForOf,
-    Splitter
+    NgForOf
   ],
   standalone: true,
   templateUrl: './buy.component.html',
@@ -27,7 +25,7 @@ export class BuyComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.productService.getAllProducts().subscribe({
+    this.productService.getAllActiveProducts().subscribe({
       next: (data) => {
         this.products = data
       }, error: (err) => {

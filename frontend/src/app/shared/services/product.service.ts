@@ -28,8 +28,8 @@ export class ProductService {
     return this.http.patch('http://localhost:5000/update/' + id, bodyProduct, {headers: headers})
   }
 
-  getAllProducts() {
-    return this.http.get<Product[]>('http://localhost:5000/getAllProducts')
+  getAllActiveProducts() {
+    return this.http.get<Product[]>('http://localhost:5000/getAllActiveProducts')
   }
 
   getProduct(id: string) {
@@ -40,8 +40,18 @@ export class ProductService {
     return this.http.get<Product[]>('http://localhost:5000/getAllProductsByUser/' + username)
   }
 
-  buyingProduct(id: string){
+  changeState(id: string | undefined, state: string){
+    const bodyProduct = new URLSearchParams();
+    bodyProduct.set('state', state)
 
-    return this.http.delete("http://localhost:5000/buying/" + id)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/x-www-form-urlencoded'
+    })
+
+    return this.http.patch("http://localhost:5000/changeState/" + id, bodyProduct, {headers: headers})
+  }
+
+  deleteProduct(id: string | undefined){
+    return this.http.delete('http://localhost:5000/deleteProduct/' + id);
   }
 }

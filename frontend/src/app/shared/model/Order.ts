@@ -5,5 +5,6 @@ export interface Order {
   productName: string;
   price: number;
   shippingAddress: string;
-  imageSrc: string
+  imageSrc: string;
+  productId: string;
 }

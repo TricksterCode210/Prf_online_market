@@ -85,6 +85,7 @@ export class SellComponent implements OnInit
       formData.append('description', this.productForm.get('description')?.value);
       formData.append('price', this.productForm.get('price')?.value);
       formData.append('username', this.productForm.get('username')?.value);
+      formData.append('state', 'ACTIVE');
 
       if (this.selectedFile) {
         formData.append('imageSrc', this.selectedFile);

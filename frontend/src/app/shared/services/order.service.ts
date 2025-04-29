@@ -17,6 +17,7 @@ export class OrderService {
     bodyOrder.set('productName', order.productName)
     bodyOrder.set('imageSrc', order.imageSrc)
     bodyOrder.set('shippingAddress', order.shippingAddress)
+    bodyOrder.set('productId', order.productId)
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -29,7 +30,7 @@ export class OrderService {
     return this.http.get<Order[]>('http://localhost:5000/getAllOrders', {withCredentials: true});
   }
 
-  shipOrder(id: string) {
-    return this.http.delete("http://localhost:5000/shipOrder/" + id)
+  deleteOrder(id: string) {
+    return this.http.delete("http://localhost:5000/deleteOrder/" + id)
   }
 }

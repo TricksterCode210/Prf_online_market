@@ -39,7 +39,8 @@ export class DetailsComponent {
       productName: [''],
       price: [''],
       shippingAddress: [''],
-      imageSrc: [null]
+      imageSrc: [null],
+      productId: ['']
     })
 
     this.authService.loggedInUser().subscribe(user => {
@@ -51,7 +52,7 @@ export class DetailsComponent {
     const productId = this.router.url.split('/')[2]
     this.productService.getProduct(productId).subscribe({
       next: (data) => {
-        this.orderForm.patchValue({ productName: data.name, price: data.price, imageSrc: data.imageSrc, sellerName: data.username })
+        this.orderForm.patchValue({ productName: data.name, price: data.price, imageSrc: data.imageSrc, sellerName: data.username, productId: data._id })
         this.product = data
       }, error: (err) => {
         console.log(err)
@@ -60,7 +61,7 @@ export class DetailsComponent {
   }
 
   buyingProduct() {
-    this.productService.buyingProduct(this.product._id).subscribe({
+    this.productService.changeState(this.product._id, 'INACTIVE').subscribe({
       next: (data) => {
         console.log("Sikeres vásárlás")
         this.makeOrder()
