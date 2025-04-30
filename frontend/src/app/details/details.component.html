@@ -12,7 +12,7 @@
       <textarea pTextarea rows="5" cols="40" id="description" readonly [(ngModel)]="product.description"></textarea>
       <label for="description">Termék leírása</label>
     </p-float-label>
-  <img alt="Kép" src="http://localhost:5000/{{product.imageSrc}}"/>
+    <p-image width="75%" alt="Kép" src="http://localhost:5000/{{product.imageSrc}}"/>
   <p-button type="button" label="Vásárlás" (onClick)="buyingProduct()"/>
   <p-button type="button" label="Mégsem" severity="danger" routerLink="/buy"/>
   </div>

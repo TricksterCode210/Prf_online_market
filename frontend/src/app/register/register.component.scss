@@ -1,27 +1,3 @@
-.login-container {
-  display: flex;
-  justify-content: center;
-  align-items:  center;
-}
-
-.login-form {
-  justify-content: center;
-  align-items:  center;
-  display: flex;
-  flex-direction: column;
-  width: 40%;
-  border: 1px solid mediumaquamarine;
-  border-radius: 5px;
-}
-
-.login-form input {
-  margin: 10px;
-
-}
-.login-form p-button {
-  margin: 10px;
-}
-
 input[type=radio] {
   gap: 10px;
 }

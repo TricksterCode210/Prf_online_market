@@ -1,6 +1,7 @@
 <div class="login-container">
   <p-toast position="bottom-right" key="b1" />
   <form class="login-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <h2 class="mb-4 mt-2">Regisztráció</h2>
     <p-floatlabel variant="on">
       <input pInputText id="name" formControlName="name"/>
       <label for="name">Neve</label>

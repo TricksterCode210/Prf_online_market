@@ -13,6 +13,7 @@ import {FileUpload} from 'primeng/fileupload'
 import {ProductService} from '../shared/services/product.service'
 import {Card} from 'primeng/card'
 import {Product} from '../shared/model/Product'
+import {Image} from 'primeng/image'
 
 @Component({
   selector: 'app-sell',
@@ -26,7 +27,8 @@ import {Product} from '../shared/model/Product'
     TextareaModule,
     InputNumberModule,
     FileUpload,
-    Card
+    Card,
+    Image
   ],
   providers: [],
   templateUrl: './sell.component.html',

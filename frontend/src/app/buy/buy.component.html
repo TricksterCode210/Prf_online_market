@@ -1,9 +1,10 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-4 mt-5" *ngFor="let product of products">
+    <h2 class="text-center">Termék vásárlás</h2>
+    <div class="col-3 mt-5" *ngFor="let product of products">
       <p-card class="justify-content-center text-center h-100 w-100" >
-        <ng-template #header>
-          <img alt="Kép" src="http://localhost:5000/{{product.imageSrc}}"/>
+        <ng-template #header >
+          <p-image width="75%" height="250" alt="Kép" src="http://localhost:5000/{{product.imageSrc}}"/>
         </ng-template>
         <ng-template #title> {{ product.name }}</ng-template>
         <ng-template #subtitle> {{ product.price }} Ft</ng-template>

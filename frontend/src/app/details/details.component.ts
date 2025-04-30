@@ -11,6 +11,7 @@ import {FloatLabel} from 'primeng/floatlabel'
 import {InputText} from 'primeng/inputtext'
 import {Textarea} from 'primeng/textarea'
 import {InputNumber, InputNumberModule} from 'primeng/inputnumber'
+import {Image} from 'primeng/image'
 
 @Component({
   selector: 'app-details',
@@ -24,7 +25,8 @@ import {InputNumber, InputNumberModule} from 'primeng/inputnumber'
     Textarea,
     RouterLink,
     InputNumber,
-    InputNumberModule
+    InputNumberModule,
+    Image
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',

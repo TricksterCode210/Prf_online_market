@@ -5,13 +5,17 @@ import {Card} from 'primeng/card'
 import {Button} from 'primeng/button'
 import {NgForOf} from '@angular/common';
 import {Router} from '@angular/router'
+import {FormsModule} from '@angular/forms'
+import {Image} from 'primeng/image'
 
 @Component({
   selector: 'app-buy',
   imports: [
     Card,
     Button,
-    NgForOf
+    NgForOf,
+    FormsModule,
+    Image
   ],
   standalone: true,
   templateUrl: './buy.component.html',
