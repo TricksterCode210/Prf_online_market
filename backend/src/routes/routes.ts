@@ -102,6 +102,27 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         }
     })
 
+    router.patch('/update/:id', upload.single('imageSrc'), (req: Request, res: Response) => {
+        const productId = req.params.id;
+        const name = req.body.name;
+        const price = req.body.price;
+        const description = req.body.description;
+        const imageSrc = req.file?.path
+        const username = req.body.username
+        Product.updateOne({_id: productId},
+            {
+                name: name,
+                price: price,
+                description: description,
+                imageSrc: imageSrc,
+                username: username
+            }).then(data => {
+            res.status(200).send(data)
+        }).catch(error => {
+            res.status(500).send("Sikertelen módosítás: " + error)
+        })
+    })
+
     router.post('/logout', (req: Request, res: Response) => {
         if (req.isAuthenticated()) {
             req.logout((error) => {
@@ -165,27 +186,7 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
-    router.patch('/update/:id', (req: Request, res: Response) => {
-        const productId = req.params.id;
-        const name = req.body.name;
-        const price = req.body.price;
-        const description = req.body.description;
-        // const imageSrc = req.body.imageSrc
-        const imageSrc = "https://th.bing.com/th/id/OIP.BmmdpuEUMVafIL_kvGfdsAHaFj?rs=1&pid=ImgDetMain";
-        const username = req.body.username
-        Product.updateOne({_id: productId},
-            {
-                name: name,
-                price: price,
-                description: description,
-                imageSrc: imageSrc,
-                username: username
-            }).then(data => {
-            res.status(200).send(data)
-        }).catch(error => {
-            res.status(500).send("Sikertelen módosítás: " + error)
-        })
-    })
+
 
 
     router.post('/makeOrder', (req:Request, res: Response) => {

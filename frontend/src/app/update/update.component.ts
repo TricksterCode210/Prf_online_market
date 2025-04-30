@@ -29,12 +29,12 @@ import {AuthService} from '../shared/services/auth.service'
 })
 export class UpdateComponent {
   productForm!: FormGroup
+  selectedFile!: File | null;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private productService: ProductService,
-    private authService: AuthService
+    private productService: ProductService
   )
   {
   }
@@ -63,8 +63,18 @@ export class UpdateComponent {
   onSubmit() {
     const productId = this.router.url.split('/')[2]
     if(this.productForm.valid) {
-      console.log("Form data: ", this.productForm.value);
-      this.productService.updateProduct(this.productForm.value, productId).subscribe({
+      const formData = new FormData();
+      formData.append('name', this.productForm.get('name')?.value);
+      formData.append('description', this.productForm.get('description')?.value);
+      formData.append('price', this.productForm.get('price')?.value);
+      formData.append('username', this.productForm.get('username')?.value);
+      formData.append('state', 'ACTIVE');
+
+      if (this.selectedFile) {
+        formData.append('imageSrc', this.selectedFile);
+      }
+
+      this.productService.updateProduct(formData, productId).subscribe({
         next: (data) => {
           console.log(data)
           this.router.navigateByUrl('/sell')
@@ -78,12 +88,8 @@ export class UpdateComponent {
   }
 
   onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.productForm.patchValue({
-        imageSrc: file
-      });
-      this.productForm.get('imageSrc')?.updateValueAndValidity();
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];  // csak az elsőt vesszük
     }
   }
 
