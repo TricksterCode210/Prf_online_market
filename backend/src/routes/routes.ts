@@ -283,6 +283,21 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
 
     router.delete('/deleteProduct/:id', (req:Request, res: Response) => {
         const id = req.params.id
+
+        Product.findById(id).then(
+            data => {
+                if(data?.imageSrc) {
+                    fs.unlink(data.imageSrc, (err) => {
+                        if(err){
+                            console.error("Sikertelen törlése: " + err)
+                        } else {
+                            console.log('Sikeres törlés')
+                        }
+                    })
+                }
+            }
+        );
+
         const query = Product.findByIdAndDelete(id)
         query.then(data => {
             res.status(200).send(data)
