@@ -15,6 +15,7 @@ import {AsyncPipe, NgIf} from '@angular/common'
 })
 export class NavbarComponent implements OnInit {
   isAuth!: Signal<boolean>;
+  username!: Signal<string>;
 
   pages = computed<MenuItem[]>(() => {
     const auth = this.isAuth();
@@ -42,6 +43,7 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.isAuth = this.authService.isAuthenticated;
+    this.username = this.authService.username
   }
 
   logout() {

@@ -9,6 +9,8 @@ import {tap} from 'rxjs'
 export class AuthService {
   private _isAuthenticated = signal(false);
   isAuthenticated = this._isAuthenticated.asReadonly();
+  private _username = signal('')
+  username = this._username.asReadonly()
 
   constructor(private http: HttpClient) { }
 
@@ -40,6 +42,7 @@ export class AuthService {
     return this.http.post('http://localhost:5000/login', bodyLogin, {headers: headers, withCredentials: true}).pipe(
       tap(() => {
         this._isAuthenticated.set(true);
+        this._username.set(username)
       })
     );
   }
@@ -48,6 +51,7 @@ export class AuthService {
     return this.http.post('http://localhost:5000/logout', {}, {withCredentials: true, responseType: 'text'}).pipe(
       tap(() => {
         this._isAuthenticated.set(false);
+        this._username.set('')
       })
     );
   }

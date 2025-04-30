@@ -37,7 +37,7 @@ export class OrdersComponent implements OnInit {
     const threeDaysLater = new Date();
     threeDaysLater.setDate(today.getDate() + 3);
     const sevenDaysLater = new Date();
-    threeDaysLater.setDate(today.getDate() +7);
+    sevenDaysLater.setDate(today.getDate() +7);
     this.shippingForm = this.formBuilder.group({
       from: [''],
       to: [''],
