@@ -230,7 +230,7 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
 	router.get('/getAllProductsByUser/:username', (req: Request, res: Response) =>
 	{
 		const username = req.params.username
-		const query = Product.find({username: username})
+		const query = Product.find({username: username, state: 'ACTIVE'})
 		query.then(data =>
 		{
 			res.status(200).send(data)
