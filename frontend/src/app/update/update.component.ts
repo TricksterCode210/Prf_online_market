@@ -9,7 +9,6 @@ import {TextareaModule} from 'primeng/textarea'
 import {InputNumberModule} from 'primeng/inputnumber'
 import {Router} from '@angular/router'
 import {ProductService} from '../shared/services/product.service'
-import {AuthService} from '../shared/services/auth.service'
 
 @Component({
   selector: 'app-update',

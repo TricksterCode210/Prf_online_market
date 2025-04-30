@@ -5,6 +5,7 @@ import {Shipping} from '../shared/model/Shipping'
 import {ShippingService} from '../shared/services/shipping.service'
 import {Button} from 'primeng/button'
 import {Image} from 'primeng/image'
+import {AuthService} from '../shared/services/auth.service'
 
 @Component({
   selector: 'app-shipping',
@@ -16,18 +17,24 @@ import {Image} from 'primeng/image'
 export class ShippingComponent implements OnInit {
   shippings!: Shipping[]
 
-  constructor(private shippingService: ShippingService)
+  constructor(private shippingService: ShippingService, private authService: AuthService)
   {
   }
 
   ngOnInit() {
-    this.shippingService.getAllShippingDetails().subscribe({
-      next: (data) => {
-        this.shippings = data
-      }, error: (err) => {
-        console.log("Hiba történt: " + err)
+
+    this.authService.loggedInUser().subscribe(user => {
+      if (user) {
+        this.shippingService.getAllShippingDetailsByUser(user.username).subscribe({
+          next: (data) => {
+            this.shippings = data
+          }, error: (err) => {
+            console.log(err)
+          }
+        })
       }
-    })
+    });
+
   }
 
 }

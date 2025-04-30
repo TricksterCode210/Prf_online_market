@@ -26,7 +26,7 @@ export class ShippingService {
     return this.http.post('http://localhost:5000/shipping', bodyShipping, {headers: headers})
   }
 
-  getAllShippingDetails() {
-    return this.http.get<Shipping[]>('http://localhost:5000/getAllShipping')
+  getAllShippingDetailsByUser(username: string) {
+    return this.http.get<Shipping[]>('http://localhost:5000/getAllShippingByUser/' + username)
   }
 }

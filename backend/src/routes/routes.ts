@@ -250,8 +250,9 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         })
     })
 
-    router.get('/getAllShipping',(req: Request, res: Response) => {
-        const query = Shipping.find();
+    router.get('/getAllShippingByUser/:username',(req: Request, res: Response) => {
+        const username = req.params.username
+        const query = Shipping.find({buyer: username});
         query.then(data => {
             res.status(200).send(data)
         }).catch(error => {
