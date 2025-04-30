@@ -7,9 +7,8 @@ Online piactér
 Feladat kiírás
 ---------------
 Szerepkörök: eladók, vevők és vendégek.
+
 Csak a regisztrált felhasználók lehetnek eladók vagy vevők. A vendég felhasználók böngészhetik, milyen használt termékek érhetők el és megtekinthetik azok árait, de vásárlást nem kezdeményezhetnek. Az eladók feltölthetik használt termékeiket, de természetesen nem vásárolhatják meg a saját feltöltött termékeiket. Ha egy használt termék eladásra kerül, az inaktívvá válik a piactéren. Az eladók listázhatják, hogy melyik terméket milyen összegért sikerült értékesíteni, a vevők pedig láthatják korábbi vásárlásaikat.
-
-
 
 Két feladatkör van, de van egy plusz admin, aki mindenre képes a felületen tesztelés szempontjából. Az eredeti két szerepkör az az eladó és a vásárló.
 Van az adatbázis indulásakor 1 vásárló és 2 eladó (1 admin, de az csak tesztelésre).
