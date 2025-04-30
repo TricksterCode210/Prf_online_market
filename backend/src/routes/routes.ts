@@ -7,6 +7,7 @@ import multer from 'multer'
 import path from 'path'
 import {Order} from '../model/Order'
 import {Shipping} from '../model/Shipping'
+import * as fs from 'node:fs'
 
 export const configureRoutes = (passport: PassportStatic, router: Router): Router => {
     router.get('/', (req: Request, res: Response) => {
@@ -109,6 +110,21 @@ export const configureRoutes = (passport: PassportStatic, router: Router): Route
         const description = req.body.description;
         const imageSrc = req.file?.path
         const username = req.body.username
+
+        Product.findById(productId).then(
+            data => {
+                if(data?.imageSrc) {
+                    fs.unlink(data.imageSrc, (err) => {
+                        if(err){
+                            console.error("Sikertelen törlése: " + err)
+                        } else {
+                            console.log('Sikeres törlés')
+                        }
+                    })
+                }
+            }
+        );
+
         Product.updateOne({_id: productId},
             {
                 name: name,
