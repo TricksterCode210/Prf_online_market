@@ -1,0 +1,18 @@
+services:
+  mongodb:
+    image: online_market
+    container_name: online_market
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - ./mongo:/dump
+    networks:
+      - mongodb_network
+    ports:
+      - 6000:27017
+    restart: unless-stopped
+
+networks:
+  mongodb_network:
+    name: mongodb_network

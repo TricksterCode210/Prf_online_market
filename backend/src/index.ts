@@ -11,7 +11,7 @@ import path from 'path'
 
 const app = express()
 const port = 5000
-const dbUrl = 'mongodb://localhost:6000/market';
+const dbUrl = 'mongodb://root:password@localhost:6000/market?authSource=admin';
 
 mongoose.connect(dbUrl).then((data) => {
 	console.log("Sikeres csatlakozás a DB-hez")
