@@ -1,18 +1,30 @@
 import { Component } from '@angular/core';
 import {Product} from '../shared/model/Product'
 import {ProductService} from '../shared/services/product.service'
-import {Router} from '@angular/router'
+import {Router, RouterLink} from '@angular/router'
 import {NgIf} from '@angular/common'
 import {Button} from 'primeng/button'
-import {FormBuilder, FormGroup} from '@angular/forms'
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms'
 import {AuthService} from '../shared/services/auth.service'
 import {OrderService} from '../shared/services/order.service'
+import {FloatLabel} from 'primeng/floatlabel'
+import {InputText} from 'primeng/inputtext'
+import {Textarea} from 'primeng/textarea'
+import {InputNumber, InputNumberModule} from 'primeng/inputnumber'
 
 @Component({
   selector: 'app-details',
   imports: [
     NgIf,
-    Button
+    Button,
+    FloatLabel,
+    FormsModule,
+    InputText,
+    ReactiveFormsModule,
+    Textarea,
+    RouterLink,
+    InputNumber,
+    InputNumberModule
   ],
   templateUrl: './details.component.html',
   styleUrl: './details.component.scss',

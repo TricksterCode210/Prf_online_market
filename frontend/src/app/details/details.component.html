@@ -1,7 +1,19 @@
-<div *ngIf="product">
-  <p>{{product.name}}</p>
-  <p>{{product.description}}</p>
-  <p>{{product.price}}</p>
+<div *ngIf="product" class="login-container">
+  <div class="login-form">
+  <p-floatlabel variant="on">
+    <input pInputText id="name" readonly [(ngModel)]="product.name" autocomplete="off"/>
+    <label for="name">Termék neve</label>
+  </p-floatlabel>
+  <p-floatlabel variant="on" class="my-3">
+    <p-inputnumber mode="currency" currency="HUF" locale="hu-HU" [minFractionDigits]="0" id="price" [(ngModel)]="product.price"/>
+    <label for="price">Ár</label>
+  </p-floatlabel>
+    <p-float-label variant="on" class="mb-3">
+      <textarea pTextarea rows="5" cols="40" id="description" readonly [(ngModel)]="product.description"></textarea>
+      <label for="description">Termék leírása</label>
+    </p-float-label>
   <img alt="Kép" src="http://localhost:5000/{{product.imageSrc}}"/>
   <p-button type="button" label="Vásárlás" (onClick)="buyingProduct()"/>
+  <p-button type="button" label="Mégsem" severity="danger" routerLink="/buy"/>
+  </div>
 </div>
