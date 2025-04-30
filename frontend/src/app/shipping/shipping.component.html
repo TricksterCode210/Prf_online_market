@@ -19,8 +19,8 @@
         <td>{{ shipping.buyer }}</td>
         <td>{{ shipping.to }}</td>
         <td>{{shipping.productName}}</td>
-        <td>{{shipping.arrivalFirst}}</td>
-        <td>{{shipping.arrivalLast}}</td>
+        <td>{{ shipping.arrivalFirst | date:'yyyy.MM.dd' }}</td>
+        <td>{{ shipping.arrivalLast | date:'yyyy.MM.dd' }}</td>
       </tr>
     </ng-template>
   </p-table>

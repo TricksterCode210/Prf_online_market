@@ -109,7 +109,6 @@ export class OrdersComponent implements OnInit {
       next: (data) =>
       {
         console.log("Sikeres mentés")
-        this.navigate("/shipping")
       }, error: (err) => {
         console.log("Sikertelen mentés: " + err.toString())
       }
