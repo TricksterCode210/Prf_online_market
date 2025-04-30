@@ -6,7 +6,7 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=password
     volumes:
-      - ./mongo:/dump
+      - ./dump:/dump
     networks:
       - mongodb_network
     ports:
