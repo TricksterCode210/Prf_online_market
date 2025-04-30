@@ -5,10 +5,13 @@ import {FloatLabel} from 'primeng/floatlabel';
 import {ButtonModule} from 'primeng/button';
 import {Router, RouterModule} from '@angular/router'
 import {AuthService} from '../shared/services/auth.service'
+import {Toast} from 'primeng/toast'
+import {MessageService} from 'primeng/api'
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, InputTextModule, FloatLabel, ButtonModule, RouterModule],
+  imports: [FormsModule, InputTextModule, FloatLabel, ButtonModule, RouterModule, Toast],
+  providers: [MessageService],
   templateUrl: './login.component.html',
   standalone: true,
   styleUrl: './login.component.scss'
@@ -17,7 +20,7 @@ export class LoginComponent {
   username: string = ''
   password: string = '';
 
-  constructor(private router: Router, private authService: AuthService)
+  constructor(private router: Router, private authService: AuthService, private messageService: MessageService)
   {
   }
 
@@ -30,10 +33,12 @@ export class LoginComponent {
             this.router.navigateByUrl('/home')
           }
         }, error:(err)=>  {
+          this.messageService.add({severity: 'error', summary: 'Hiba', detail: 'Nem létezik a felhasználó vagy helytelen jelszó', key: 'b1', life: 5000})
           console.log(err)
         }
       })
     } else {
+      this.messageService.add({severity: 'error', summary: 'Hiba', detail: 'Hibás kitöltés', key: 'b1', life: 5000})
       console.log("Nem jó")
     }
   }

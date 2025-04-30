@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core'
 import {Button} from "primeng/button";
 import {FloatLabel} from "primeng/floatlabel";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -7,6 +7,8 @@ import {RadioButton} from 'primeng/radiobutton';
 import {NgClass, NgForOf, Location} from '@angular/common';
 import {Router, RouterModule} from '@angular/router'
 import {AuthService} from '../shared/services/auth.service'
+import {Toast} from 'primeng/toast'
+import {MessageService} from 'primeng/api'
 
 @Component({
   selector: 'app-register',
@@ -18,8 +20,10 @@ import {AuthService} from '../shared/services/auth.service'
     RadioButton,
     NgForOf,
     NgClass,
-    RouterModule
+    RouterModule,
+    Toast
   ],
+  providers: [MessageService],
   templateUrl: './register.component.html',
   standalone: true,
   styleUrl: './register.component.scss'
@@ -36,7 +40,8 @@ export class RegisterComponent implements OnInit {
     constructor(
       private formBuilder: FormBuilder,
       private router: Router,
-      private authService: AuthService
+      private authService: AuthService,
+      private messageService: MessageService
     ) {
 
     }
@@ -49,11 +54,13 @@ export class RegisterComponent implements OnInit {
             console.log(data)
             this.router.navigateByUrl('/login')
           }, error: (err) => {
+            this.messageService.add({severity: 'error', summary: 'Hiba', detail: 'Hiba történt mentésnél', key: 'b1', life: 5000})
             console.log(err)
           }
         })
       }
       else {
+        this.messageService.add({severity: 'error', summary: 'Hiba', detail: 'Hibás kitöltés', key: 'b1', life: 5000})
         console.log("Hiba van a formban")
       }
     }
