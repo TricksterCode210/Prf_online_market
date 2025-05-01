@@ -1,6 +1,6 @@
 services:
   mongodb:
-    image: online_market
+    image: mongo
     container_name: online_market
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
