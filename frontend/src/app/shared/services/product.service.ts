@@ -10,11 +10,11 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   sell(product: FormData) {
-    return this.http.post('http://localhost:5000/sell', product);
+    return this.http.post('http://localhost:5000/sell', product, {withCredentials: true});
   }
 
   updateProduct(product: FormData, id: string) {
-    return this.http.patch('http://localhost:5000/update/' + id, product)
+    return this.http.patch('http://localhost:5000/update/' + id, product, {withCredentials: true})
   }
 
   getAllActiveProducts() {
@@ -22,7 +22,7 @@ export class ProductService {
   }
 
   getProduct(id: string) {
-    return this.http.get<Product>('http://localhost:5000/getProduct/' + id)
+    return this.http.get<Product>('http://localhost:5000/getProduct/' + id, {withCredentials: true})
   }
 
   getAllProductsByUser(username: string){
@@ -37,10 +37,10 @@ export class ProductService {
       'Content-Type': 'application/x-www-form-urlencoded'
     })
 
-    return this.http.patch("http://localhost:5000/changeState/" + id, bodyProduct, {headers: headers})
+    return this.http.patch("http://localhost:5000/changeState/" + id, bodyProduct, {headers: headers, withCredentials: true})
   }
 
   deleteProduct(id: string | undefined){
-    return this.http.delete('http://localhost:5000/deleteProduct/' + id);
+    return this.http.delete('http://localhost:5000/deleteProduct/' + id, {withCredentials: true});
   }
 }

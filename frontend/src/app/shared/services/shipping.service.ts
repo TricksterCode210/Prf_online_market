@@ -23,10 +23,10 @@ export class ShippingService {
       'Content-Type': 'application/x-www-form-urlencoded'
     })
 
-    return this.http.post('http://localhost:5000/shipping', bodyShipping, {headers: headers})
+    return this.http.post('http://localhost:5000/shipping', bodyShipping, {headers: headers, withCredentials: true})
   }
 
   getAllShippingDetailsByUser(username: string) {
-    return this.http.get<Shipping[]>('http://localhost:5000/getAllShippingByUser/' + username)
+    return this.http.get<Shipping[]>('http://localhost:5000/getAllShippingByUser/' + username, {withCredentials: true})
   }
 }

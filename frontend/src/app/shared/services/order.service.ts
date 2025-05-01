@@ -23,7 +23,7 @@ export class OrderService {
       'Content-Type': 'application/x-www-form-urlencoded'
     })
 
-    return this.http.post('http://localhost:5000/makeOrder', bodyOrder, {headers: headers})
+    return this.http.post('http://localhost:5000/makeOrder', bodyOrder, {headers: headers, withCredentials: true})
   }
 
   getAllOrders() {
@@ -31,6 +31,6 @@ export class OrderService {
   }
 
   deleteOrder(id: string) {
-    return this.http.delete("http://localhost:5000/deleteOrder/" + id)
+    return this.http.delete("http://localhost:5000/deleteOrder/" + id, {withCredentials: true})
   }
 }

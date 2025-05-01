@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, OnInit, signal} from '@angular/core'
 import {Order} from '../shared/model/Order'
 import {OrderService} from '../shared/services/order.service'
 import {TableModule} from 'primeng/table'
@@ -19,7 +19,7 @@ import {ProductService} from '../shared/services/product.service'
   styleUrl: './orders.component.scss'
 })
 export class OrdersComponent implements OnInit {
-  orders!: Order[]
+  orders = signal<Order[]>([])
   shippingForm!: FormGroup;
 
   constructor(
@@ -54,9 +54,13 @@ export class OrdersComponent implements OnInit {
       }
     });
 
+    this.getOrders()
+  }
+
+  getOrders() {
     this.orderService.getAllOrders().subscribe({
       next: (data) => {
-        this.orders = data
+        this.orders.set(data)
       }, error: (err) => {
         console.log("Hiba történt: " + err)
       }
@@ -68,6 +72,7 @@ export class OrdersComponent implements OnInit {
     this.orderService.deleteOrder(id).subscribe({
       next: (data) => {
         this.activateProduct(id)
+        this.getOrders()
         console.log("Sikeres vásárlás")
       }, error: (err) => {
         console.log("Sikertelen vásárlás: " + err)
@@ -77,7 +82,7 @@ export class OrdersComponent implements OnInit {
 
   shipOrder(id:string)
   {
-    const order = this.orders.find(order =>order._id === id)
+    const order = this.orders().find(order =>order._id === id)
     this.shippingForm.patchValue({
       from: order?.shippingAddress,
       buyer: order?.buyerName,
@@ -116,7 +121,7 @@ export class OrdersComponent implements OnInit {
   }
 
   activateProduct(id: string) {
-    const order = this.orders.find(order =>order._id === id)
+    const order = this.orders().find(order =>order._id === id)
     this.productService.changeState(order?.productId, 'ACTIVE').subscribe({
       next: (data) => {
         console.log("Sikeres módosítás")

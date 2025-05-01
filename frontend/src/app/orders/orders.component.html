@@ -1,6 +1,6 @@
 <div class="container-fluid text-center">
   <h1>Beérkezett megrendeléseim</h1>
-  <p-table [value]="orders" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="5" stripedRows [rowsPerPageOptions]="[1, 5, 10, 20]">
+  <p-table [value]="orders()" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="5" stripedRows [rowsPerPageOptions]="[1, 5, 10, 20]">
     <ng-template #header>
       <tr>
         <th>Gombok</th>
