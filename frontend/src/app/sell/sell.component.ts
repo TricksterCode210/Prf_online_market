@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, OnInit, signal} from '@angular/core'
 import {Button} from 'primeng/button'
 import {FloatLabel} from 'primeng/floatlabel'
 import {InputText} from 'primeng/inputtext'
@@ -14,6 +14,9 @@ import {ProductService} from '../shared/services/product.service'
 import {Card} from 'primeng/card'
 import {Product} from '../shared/model/Product'
 import {Image} from 'primeng/image'
+import {Toast} from 'primeng/toast'
+import {ConfirmationService, MessageService} from 'primeng/api'
+import {ConfirmDialog} from 'primeng/confirmdialog'
 
 @Component({
   selector: 'app-sell',
@@ -28,9 +31,11 @@ import {Image} from 'primeng/image'
     InputNumberModule,
     FileUpload,
     Card,
-    Image
+    Image,
+    Toast,
+    ConfirmDialog
   ],
-  providers: [],
+  providers: [MessageService, ConfirmationService],
   templateUrl: './sell.component.html',
   styleUrl: './sell.component.scss',
   standalone:true
@@ -38,14 +43,16 @@ import {Image} from 'primeng/image'
 export class SellComponent implements OnInit
 {
   productForm!: FormGroup;
-  products!: Product[];
+  products = signal<Product[]>([]);
   selectedFile!: File | null;   // <-- Hozzáadva: hogy elmentsd a kiválasztott képet
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private productService: ProductService,
-    private authService: AuthService
+    private authService: AuthService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   )
   {
   }
@@ -65,7 +72,7 @@ export class SellComponent implements OnInit
         this.productForm.patchValue({ username: user.username });
         this.productService.getAllProductsByUser(user.username).subscribe({
           next: (data) => {
-            this.products = data
+            this.products.set(data)
           }, error: (err) => {
             console.log(err)
           }
@@ -109,5 +116,43 @@ export class SellComponent implements OnInit
 
   navigate(to: string) {
     this.router.navigateByUrl(to);
+  }
+
+  delete(id: string){
+    this.productService.deleteProduct(id).subscribe({
+      next: (data) => {
+        this.messageService.add({severity: 'success', summary: 'Sikeres művelet', detail: 'Sikeresen kitörölte a terméket', key: 'b1', life: 5000})
+        this.products.update(products => products.filter(p => p._id !== id))
+      },
+      error: (err) => {
+        this.messageService.add({severity: 'error', summary: 'Hiba', detail: 'Sikertelen törlés', key: 'b1', life: 5000})
+      }
+    })
+  }
+
+  confirmDelete(event: Event, id: string){
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Biztosan törli a terméket',
+      header: 'Törlés',
+      icon: 'pi pi-info-circle',
+      rejectLabel: 'Mégsem',
+      rejectButtonProps: {
+        label: 'Mégsem',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Törlés',
+        severity: 'danger',
+      },
+
+      accept: () => {
+        this.delete(id)
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Mégsem', detail: 'Megszakította a törlési folyamatot' });
+      },
+    });
   }
 }
