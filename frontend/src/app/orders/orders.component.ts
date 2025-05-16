@@ -72,7 +72,7 @@ export class OrdersComponent implements OnInit {
     this.orderService.deleteOrder(id).subscribe({
       next: (data) => {
         this.activateProduct(id)
-        this.getOrders()
+        this.orders.update(orders => orders.filter(o => o._id !== id))
         console.log("Sikeres vásárlás")
       }, error: (err) => {
         console.log("Sikertelen vásárlás: " + err)
